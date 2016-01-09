@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.IUser_infosDAO">
+	
+	<!-- 通过多个id获取多个用户信息 -->
+	<select id="selectUser_infosByIDs" resultType="User_infos">
+		SELECT * FROM user_infos WHERE user_id IN ( <foreach collection="array" index="index" item="id" separator=",">#{id}</foreach> )
+	</select>
+	
+	<insert id="insertUser_infos" parameterType="User_infos" useGeneratedKeys="true" keyProperty="user_id">
+		INSERT INTO user_infos( name, personal_num, courseList, sex, phone_num, email ) 
+			VALUES ( #{name}, #{personal_num}, #{courseList}, #{sex}, #{phone_num}, #{email} )
+	</insert>
+	
+	<select id="selectUser_infosByID" parameterType="int" resultType="User_infos">
+		SELECT * FROM user_infos WHERE user_id=#{user_id}
+	</select>
+	
+	<select id="selectUser_infosByCourse_id" parameterType="int" resultType="User_infos">
+		SELECT * FROM user_infos WHERE courseList LIKE CONCAT('%|', #{course_id}, '|%')
+	</select>
+	
+	<update id="updateUser_infosByID" parameterType="User_infos" keyProperty="user_id">
+		UPDATE user_infos SET name=#{name}, personal_num=#{personal_num}, courseList=#{courseList}, sex=#{sex}, phone_num=#{phone_num}, email=#{email} 
+			WHERE user_id=#{user_id}
+	</update>
+	
+	<select id="selectUser_infosByCourse_ids" resultType="User_infos">
+		SELECT * FROM user_infos WHERE courseList LIKE
+		<foreach collection="array" index="index" item="course_id" separator="OR courseList LIKE ">
+		CONCAT('%|', #{course_id}, '|%')
+		</foreach>
+	</select>
+	
+</mapper>

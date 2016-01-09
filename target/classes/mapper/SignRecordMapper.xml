@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.ISignRecordDAO">
+	<select id="getAllSignRecordByCourse_id" parameterType="int" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE course_id=#{course_id}
+	</select>
+	
+	<select id="getSignRecordByUser_id" parameterType="int" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE user_id=#{user_id}
+	</select>
+	
+	<select id="getOnesSignRecordBetweenStartDateANDEndDate" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND date BETWEEN #{start_date} AND #{end_date}
+	</select>
+	
+	<select id="getOnesLateRecordByCourse_id" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signInTime $gt; (#{shouldSignTime} + #{lateTime})
+	</select>
+	
+	<select id="getOnesEarlyLeaveRecordByCourse_id" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signInTime $lt; (#{shouldSignTime} - #{earlyLeaveTime})
+	</select>
+	
+	<insert id="insertSignRecord" parameterType="SignRecord">
+		INSERT INTO signRecord(user_id, course_id, sign_date, signInTime, signOutTime)
+			VALUES(#{user_id}, #{course_id}, #{sign_date}, #{signInTime}, #{signOutTime})
+	</insert>
+	
+	<update id="updateSignInRecord" parameterType="SignRecord" keyProperty="user_id">
+		UPDATE signRecord SET signInTime=#{signInTime} WHERE user_id=#{user_id} AND course_id=#{course_id} AND sign_date=#{sign_date} AND signInTime=0
+	</update>
+	
+	<update id="updateSignOutRecord" parameterType="SignRecord" keyProperty="user_id">
+		UPDATE signRecord SET signOutTime=#{signOutTime} WHERE user_id=#{user_id} AND course_id=#{course_id} AND sign_date=#{sign_date} AND signOutTime=0
+	</update>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 命名空间,设置别名 -->
+	<typeAliases>
+		<typeAlias alias="User" type="com.springmvc.model.User"></typeAlias>
+		<typeAlias alias="User_infos" type="com.springmvc.model.User_infos"></typeAlias>
+		<typeAlias alias="Course" type="com.springmvc.model.Course" />
+		<typeAlias alias="Message" type="com.springmvc.model.Message"/>
+		<typeAlias alias="SignRecord" type="com.springmvc.model.SignRecord" />
+	</typeAliases>
+	
+	<!-- 映射map -->
+	<mappers>
+	</mappers>
+</configuration>
