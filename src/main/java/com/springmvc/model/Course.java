@@ -7,17 +7,19 @@ public class Course {
 	private String position;
 	private String start_time;
 	private String end_time;
+	private int week_time;
 	private String signInIP;
 	
 	public Course(){ }
 	
-	public Course(int course_id, String course_name, String teacher_name, String position, String start_time, String end_time, String signInIP){
+	public Course(int course_id, String course_name, String teacher_name, String position, String start_time, String end_time, int week_time, String signInIP){
 		this.course_id = course_id;
 		this.course_name = course_name;
 		this.teacher_name = teacher_name;
 		this.position = position;
 		this.start_time = start_time;
 		this.end_time = end_time;
+		this.week_time = week_time;
 		this.signInIP = signInIP;
 	}
 
@@ -67,6 +69,14 @@ public class Course {
 
 	public void setEnd_time(String end_time) {
 		this.end_time = end_time;
+	}
+	
+	public void setWeek_time(int week_time){
+		this.week_time = week_time;
+	}
+	
+	public int getWeek_time(){
+		return week_time;
 	}
 
 	public String getSignInIP() {

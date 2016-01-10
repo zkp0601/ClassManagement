@@ -87,7 +87,7 @@
 								<table class="table table-striped table-bordered" style="background-color:ghostwhite !important;">
 									<thead>
 										<tr>
-											<th style="text-align:center;">出勤率</th>
+											<th style="text-align:center;">已完成课时率</th>
 											<th style="text-align:center;">迟到率</th>
 											<th style="text-align:center;">早退率</th>
 										</tr>
@@ -95,21 +95,18 @@
 									<tbody>
 										<tr>
 											<th style="text-align:center;">
-												<div class="easy-pie-chart percentage" data-percent="90"
-													data-color="#3A963A">
-													<span class="percent">90</span>%
+												<div class="easy-pie-chart percentage" id="present_percent" data-percent="95" data-color="#3A963A">
+													<span class="percent" id="present_percent_content">95%</span>
 												</div>
 											</th>
 											<th style="text-align:center;">
-												<div class="easy-pie-chart percentage" data-percent="10"
-													data-color="#4398AF">
-													<span class="percent">10</span>%
+												<div class="easy-pie-chart percentage" id="late_percent" data-percent="0" data-color="#4398AF">
+													<span class="percent" id="late_percent_content">0%</span>
 												</div>
 											</th>
 											<th style="text-align:center;">
-												<div class="easy-pie-chart percentage" data-percent="5"
-													data-color="#BF3838">
-													<span class="percent">5</span>%
+												<div class="easy-pie-chart percentage" id="earlyLeave_percent" data-percent="5" data-color="#BF3838">
+													<span class="percent" id="earlyLeave_percent_content">5%</span>
 												</div>
 											</th>
 										</tr>
@@ -172,19 +169,6 @@
 		  console.log(e.target.getAttribute("href"));
 		})
 		 */
-
-		var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
-		$('.easy-pie-chart.percentage').each(function() {
-			$(this).easyPieChart({
-				barColor : $(this).data('color'),
-				trackColor : '#EEEEEE',
-				scaleColor : false,
-				lineCap : 'butt',
-				lineWidth : 8,
-				animate : oldie ? false : 1000,
-				size : 75
-			}).css('color', $(this).data('color'));
-		});
 		
 		/* $('#show_chatting_room_btn').click(function(){
 			var display = $('#show_chatting_room').attr('style');
@@ -224,6 +208,41 @@
 		var requestParams = getUrlParameters();
 		var course_id = requestParams["course_id"];
 		
+		// 设置课程首页的迟到率，早退率等
+		$.ajax({
+			url:'/ClassManagement/sign/getSignRecordData',
+			data:{course_id:course_id},
+			type:'post',
+			dataType:'json',
+			async:false,
+			
+			success : function(resultMap){
+				var finish_class_percent = (resultMap.allSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
+				var late_percent = (resultMap.lateSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
+				var earlyLeave_percent = (resultMap.earlyLeaveSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
+				
+				$('#present_percent').attr('data-percent', Math.round(finish_class_percent));
+				$('#late_percent').attr('data-percent', Math.round(late_percent));
+				$('#earlyLeave_percent').attr('data-percent', Math.round(earlyLeave_percent));
+				document.getElementById('present_percent_content').innerHTML = finish_class_percent+'%';
+				document.getElementById('late_percent_content').innerHTML = late_percent+'%';
+				document.getElementById('earlyLeave_percent_content').innerHTML = earlyLeave_percent+'%';
+			}
+		})
+		
+		var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+		$('.easy-pie-chart.percentage').each(function() {
+			$(this).easyPieChart({
+				barColor : $(this).data('color'),
+				trackColor : '#EEEEEE',
+				scaleColor : false,
+				lineCap : 'butt',
+				lineWidth : 8,
+				animate : oldie ? false : 1000,
+				size : 75
+			}).css('color', $(this).data('color'));
+		});
+		
 		// 获取当前日期，格式 YYYY-MM-DD
 		function getCurrentDate(){
 			var date = new Date();
@@ -262,7 +281,7 @@
 					}else if(r == "failed"){
 						alert("您今日已经签到");
 					}else if(r == "refused"){
-						alert("当前IP不符合，无法签到");
+						alert("无法签到，请连上相应的网络");
 					}
 				},
 				error : function(){
@@ -285,7 +304,7 @@
 					}else if(r == "failed"){
 						alert("您今日已经签退");
 					}else if(r == "refused"){
-						alert("当前IP不符合，无法签退");
+						alert("无法签退，请连上相应的网络");
 					}
 				},
 				error : function(){

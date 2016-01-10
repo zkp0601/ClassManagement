@@ -68,7 +68,8 @@ public class CourseController extends BaseController{
 		String position = request.getParameter("position").toString();
 		String start_time = request.getParameter("start_time").toString();
 		String end_time = request.getParameter("end_time").toString();
-		Course course = new Course(0, course_name, teacher_name, position, start_time, end_time, signInIP);
+		int week_time = Integer.parseInt(request.getParameter("week_time").toString());
+		Course course = new Course(0, course_name, teacher_name, position, start_time, end_time, week_time, signInIP);
 		courseService.insertCourse(course);
 		int course_id = course.getCourse_id();
 		

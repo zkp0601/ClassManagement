@@ -111,6 +111,19 @@
 
 							</div>
 						</div>
+						
+						<div class="form-group" style="height: 20px;">
+							<label class="control-label no-padding-right"
+								for="form-field-2" style="float:left;"> &nbsp;&nbsp;&nbsp;上课周数 </label>
+
+							<div class="col-sm-8" style="float:left;">
+								<span class="input-icon"> 
+									<input type="text" id="week_time" name="week_time" autocomplete=off />
+									<i class="icon-th-large black"></i>
+								</span>
+
+							</div>
+						</div>
 
 						<div class="space-4"></div>
 

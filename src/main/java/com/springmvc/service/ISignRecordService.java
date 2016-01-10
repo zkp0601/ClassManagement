@@ -19,6 +19,8 @@ public interface ISignRecordService {
 	
 	public List<SignRecord> getOnesEarlyLeaveRecordByCourse_id(int user_id, int course_id, int shouldSignTime, int earlyLeaveTime);
 	
+	public List<SignRecord> getOnesAllSignRecordByUser_idANDCourse_id(int user_id, int course_id);
+	
 	public void insertSignRecord(SignRecord signRecord);
 	
 	public int updateSignInRecord(SignRecord signRecord);

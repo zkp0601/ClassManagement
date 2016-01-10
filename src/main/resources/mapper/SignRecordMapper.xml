@@ -17,11 +17,15 @@
 	</select>
 	
 	<select id="getOnesLateRecordByCourse_id" resultType="SignRecord">
-		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signInTime $gt; (#{shouldSignTime} + #{lateTime})
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signInTime &gt; (#{shouldSignTime} + #{lateTime})
 	</select>
 	
 	<select id="getOnesEarlyLeaveRecordByCourse_id" resultType="SignRecord">
-		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signInTime $lt; (#{shouldSignTime} - #{earlyLeaveTime})
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND signOutTime &lt; (#{shouldSignTime} - #{earlyLeaveTime})
+	</select>
+	
+	<select id="getOnesAllSignRecordByUser_idANDCourse_id" resultType="SignRecord">
+		SELECT * FROM signRecord WHERE user_id=#{user_id} AND course_id=#{course_id} AND ( signInTime !=0 OR signOutTime !=0 )
 	</select>
 	
 	<insert id="insertSignRecord" parameterType="SignRecord">

@@ -39,6 +39,10 @@ public class SignRecordServiceImpl implements ISignRecordService{
 		return signRecordDAO.getOnesLateRecordByCourse_id(user_id, course_id, shouldSignTime, lateTime);
 	}
 	
+	public List<SignRecord> getOnesAllSignRecordByUser_idANDCourse_id(int user_id, int course_id){
+		return signRecordDAO.getOnesAllSignRecordByUser_idANDCourse_id(user_id, course_id);
+	}
+	
 	public List<SignRecord> getOnesEarlyLeaveRecordByCourse_id(int user_id, int course_id, int shouldSignTime, int earlyLeaveTime){
 		return signRecordDAO.getOnesEarlyLeaveRecordByCourse_id(user_id, course_id, shouldSignTime, earlyLeaveTime);
 	}

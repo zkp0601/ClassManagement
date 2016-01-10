@@ -7,6 +7,10 @@ public class SignRecord {
 	private int signInTime;
 	private int signOutTime;
 	
+	public SignRecord(){
+		
+	}
+	
 	public SignRecord(int user_id, int course_id, String sign_date, int signInTime, int signOutTime){
 		this.user_id = user_id;
 		this.course_id = course_id;
