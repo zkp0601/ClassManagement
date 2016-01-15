@@ -11,7 +11,7 @@
 		</script>
 
 		<ul class="breadcrumb">
-			<li><i class="icon-dashboard"></i> <a href="/ClassManagement/index/">我的课程</a></li>
+			<li><i class="icon-home"></i> <a href="/ClassManagement/index/">首页</a></li>
 			<li class="active" style="color:#DA5430;weight:bold;">${current_course.course_name}</li>
 		</ul>
 		<!-- .breadcrumb -->
@@ -79,7 +79,7 @@
 							<h3 class="header smaller lighter orange">
 								&nbsp;<i class="icon-trophy"></i> 考勤专栏
 								<small style="float:right;margin-top:12px;">
-									<a href="/ClassManagement/sign/signRecord?user_id=${user_info.user_id}"><i class="icon-hand-right">&nbsp;查看详情</i></a>
+									<a href="/ClassManagement/sign/signRecord?course_id=${current_course.course_id}"><i class="icon-hand-right">&nbsp;查看详情</i></a>
 								</small>
 								<!-- /span -->
 							</h3>
@@ -282,6 +282,8 @@
 						alert("您今日已经签到");
 					}else if(r == "refused"){
 						alert("无法签到，请连上相应的网络");
+					}else if(r == "redirect://ClassManagement/user/login"){
+						window.location.href = "/ClassManagement/user/login";
 					}
 				},
 				error : function(){
@@ -305,6 +307,8 @@
 						alert("您今日已经签退");
 					}else if(r == "refused"){
 						alert("无法签退，请连上相应的网络");
+					}else if(r == "redirect://ClassManagement/user/login"){
+						window.location.href = "/ClassManagement/user/login";
 					}
 				},
 				error : function(){

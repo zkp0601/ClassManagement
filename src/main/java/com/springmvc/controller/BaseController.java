@@ -17,6 +17,9 @@ public class BaseController {
 	}
 	
 	public User isSessionExists(HttpSession session){
-		return (User) session.getAttribute("currentUser");
+		Object user = session.getAttribute("currentUser");
+		if(user!=null)
+			return (User) user;
+		return null;
 	}
 }
