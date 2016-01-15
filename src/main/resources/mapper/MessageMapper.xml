@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.IMessageDAO">
+	<select id="selectMessagesBySenderAndReceiverId" resultType="Message">
+		SELECT * FROM message WHERE (sender_id=#{sender_id} AND receiver_id=#{receiver_id}) OR (sender_id=#{receiver_id} AND receiver_id=#{sender_id})
+	</select>
+	
+	<!-- 通过信息状态查询两者间的聊天信息 -->
+	<select id="selectMessagesByIs_read" resultType="Message">
+		SELECT * FROM message WHERE sender_id=#{sender_id} AND receiver_id=#{receiver_id} AND is_read=#{is_read}
+	</select>
+	
+	<insert id="insertMessage" parameterType="Message" useGeneratedKeys="true" keyProperty="message_id">
+		INSERT INTO message( content, sender_id, receiver_id, send_time ) 
+			VALUES(#{content}, #{sender_id}, #{receiver_id}, #{send_time})
+	</insert>
+
+</mapper>

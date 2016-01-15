@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springmvc.dao.ICourseDAO">
+	<select id="selectCourseById" parameterType="int" resultType="Course">
+		SELECT * FROM course WHERE course_id=#{course_id}
+	</select>
+	
+	<!-- 通过多个course_id获取多个课程信息 -->
+	<select id="selectCourseByIDs" resultType="Course">
+		SELECT * FROM course WHERE course_id IN ( <foreach collection="array" index="index" item="id" separator=",">#{id}</foreach> )
+	</select>
+	
+	<insert id="insertCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="course_id">
+		INSERT INTO course( course_name, teacher_name, position, start_time, end_time, signInIP ) 
+			VALUES(#{course_name}, #{teacher_name}, #{position}, #{start_time}, #{end_time}, #{signInIP})
+	</insert>
+
+</mapper>
