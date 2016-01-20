@@ -5,7 +5,7 @@
 
 <mapper namespace="com.springmvc.dao.IMessageDAO">
 	<select id="selectMessagesBySenderAndReceiverId" resultType="Message">
-		SELECT * FROM message WHERE (sender_id=#{sender_id} AND receiver_id=#{receiver_id}) OR (sender_id=#{receiver_id} AND receiver_id=#{sender_id})
+		SELECT * FROM message WHERE (sender_id=#{sender_id} AND receiver_id=#{receiver_id}) OR (sender_id=#{receiver_id} AND receiver_id=#{sender_id}) ORDER BY message_id
 	</select>
 	
 	<!-- 通过信息状态查询两者间的聊天信息 -->

@@ -68,7 +68,7 @@
 											<div class="widget-box transparent">
 												<div class="widget-header widget-header-small">
 													<h5 class="smaller">
-														<a href="#" class="blue">${notice_item._notice.publisher }</a> <span class="grey">
+														<a href="#" class="blue"><i class="icon-user" style="color:;"></i>&nbsp;${notice_item._notice.publisher }</a> <span class="grey">
 														published a notice</span>
 													</h5>
 	
@@ -85,7 +85,7 @@
 	
 												<div class="widget-body">
 													<div class="widget-main">
-														<textarea style="width:100%; background-color:#f2f6f9;" disabled="disabled" id="content_editable_${notice_item._notice.notice_id}">${notice_item._notice.content}</textarea>
+														<textarea style="width:100%; resize:none; background-color:#f2f6f9;" disabled="disabled" id="content_editable_${notice_item._notice.notice_id}">${notice_item._notice.content}</textarea>
 														<div class="space-6"></div>
 	
 														<div class="widget-toolbox clearfix">
@@ -111,7 +111,7 @@
 	
 												<div class="widget-body">
 													<div class="widget-main">
-														主题:
+														<i class="icon-star" style="color:#E45B50;"></i>&nbsp;主题:
 														&nbsp;<textarea class="label label-info" style="width:80%;max-width:250px;resize:none;"disabled="disabled" id="subject_editable_${notice_item._notice.notice_id}">#${notice_item._notice.subject}#</textarea>
 													</div>
 												</div>

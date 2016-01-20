@@ -76,10 +76,10 @@
 												</span>
 												<table style="width:100%; border-top:1px solid #cdd8e3;">
 													<tr>
-														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">发布者:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">${notice.publisher}</td>
+														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">发布者:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;"><i class="icon-user" style="color:#64A067!important;"></i>&nbsp;${notice.publisher}</td>
 													</tr>
 													<tr>
-														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">主题:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">${notice.subject }</td>
+														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">主题:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">#${notice.subject }#</td>
 													</tr>
 													<tr>
 														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">公告内容:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">${notice.content}</td>
@@ -146,7 +146,10 @@
 				<div class="well" style="width:100%;background-color: ghostwhite;display:block; float:left;">
 					<div class="page-header">
 						<h1>
-							我的同学 
+							<c:choose>
+								<c:when test="${is_teacher==false}"> 我的同学 </c:when>
+								<c:otherwise> 我的学生 </c:otherwise>
+							</c:choose> 
 							<small> <i class="icon-double-angle-right"></i>
 								My ClassMates
 							</small>
