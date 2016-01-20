@@ -21,6 +21,7 @@ import com.springmvc.model.User;
 import com.springmvc.model.User_infos;
 import com.springmvc.service.ICourseService;
 import com.springmvc.service.ISignRecordService;
+import com.springmvc.service.IUser_infosService;
 
 @Controller
 @RequestMapping(value={"/sign"})
@@ -91,8 +92,10 @@ public class SignController extends BaseController{
 					temp.put("earlyLeave", "false");
 				}
 				records.add(i, temp);
-				model.addAttribute("records", records);
 			}
+			System.out.println("records_size"+ records.size());
+			model.addAttribute("records", records);
+			model.addAttribute("records_size", records.size());
 		}else{
 			/** 设置上课后的15分钟及下课前的15分钟内为签到签退时间, 即900秒*/
 			allSignRecords = signRecordService.getAllSignRecordByCourse_id(course_id);
@@ -145,7 +148,7 @@ public class SignController extends BaseController{
 				}
 			}
 			model.addAttribute("records", records);
-			
+			model.addAttribute("records_size", records.size());
 		}
 		
 		return "signRecord";
@@ -209,10 +212,34 @@ public class SignController extends BaseController{
 	public Map<String, Object> getSignRecordData(HttpServletRequest request){
 		
 		int course_id = Integer.parseInt(request.getParameter("course_id"));
+		Map<String, Object> signRecordsMap = new HashMap<String, Object>();
+		if(course_id == 0){
+			User_infos user_info = (User_infos) request.getSession().getAttribute("currentUser_info");
+			String[] courseList = user_info.getCourseList().split("\\|");
+			int[] course_ids = new int[100];
+			for(int i = 1; i < courseList.length; i++){
+				course_ids[i] =  Integer.parseInt(courseList[i].toString());
+			}
+			/** 获取男女比例数据 */
+			IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+			List<User_infos> user_infos = user_infosService.selectUser_infosByCourse_ids(course_ids);
+			int total_num = user_infos.size(), male_num = 0, female_num = 0;
+			for(int i = 0; i < total_num; i++){
+				if(user_infos.get(i).getSex().equals("男")){
+					male_num++;
+				}else{
+					female_num++;
+				}
+			}
+			signRecordsMap.put("male_num", String.format("%.2f", male_num * 100 / (double)total_num));
+			signRecordsMap.put("female_num", String.format("%.2f", female_num * 100 / (double) total_num));
+			
+			return signRecordsMap;
+		}
 		User user = (User)request.getSession().getAttribute("currentUser");
 		int user_id = user.getUser_id();
 		
-		//获取该课程应当签到签退的时间 HH:MM, 并转化为int参数
+		/** 获取该课程应当签到签退的时间 HH:MM, 并转化为int参数 */
 		ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
 		Course course = courseService.selectCourseById(course_id);
 		String[] signIn = course.getStart_time().split(":");
@@ -221,18 +248,31 @@ public class SignController extends BaseController{
 		int shouldSignInTime = Integer.parseInt(signIn[0]) * 3600 + Integer.parseInt(signIn[1]) * 60;
 		int shouldSignOutTime = Integer.parseInt(signOut[0]) * 3600 + Integer.parseInt(signOut[1]) * 60;
 		
-		// 设置上课后的15分钟及下课前的15分钟内为签到签退时间, 即900秒
+		/** 设置上课后的15分钟及下课前的15分钟内为签到签退时间, 即900秒 */
 		ISignRecordService signRecordService = (ISignRecordService) this.context.getBean("signRecordServiceImpl");
 		List<SignRecord> allSignRecords = signRecordService.getOnesAllSignRecordByUser_idANDCourse_id(user_id, course_id);
 		
 		List<SignRecord> lateSignRecords = signRecordService.getOnesLateRecordByCourse_id(user_id, course_id, shouldSignInTime, 900);
 		List<SignRecord> earlyLeaveSignRecords = signRecordService.getOnesEarlyLeaveRecordByCourse_id(user_id, course_id, shouldSignOutTime, 900);
 		
-		Map<String, Object> signRecordsMap = new HashMap<String, Object>();
 		signRecordsMap.put("allSignRecords", allSignRecords);
 		signRecordsMap.put("lateSignRecords", lateSignRecords);
 		signRecordsMap.put("earlyLeaveSignRecords", earlyLeaveSignRecords);
 		signRecordsMap.put("total_class_num", course.getWeek_time());
+		
+		/** 根据传入的course_id获取该门课程的男女比例 */
+		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+		List<User_infos> user_infos = user_infosService.selectUser_infosByCourse_id(course_id);
+		int male_num = 0, female_num = 0;
+		for(int i = 0; i < user_infos.size(); i++){
+			if(user_infos.get(i).getSex().equals("男")){
+				male_num++;
+			}else{
+				female_num++;
+			}
+		}
+		signRecordsMap.put("male_num", male_num);
+		signRecordsMap.put("female_num", female_num);
 		return signRecordsMap;
 	}
 	

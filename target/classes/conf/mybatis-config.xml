@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="Course" type="com.springmvc.model.Course" />
 		<typeAlias alias="Message" type="com.springmvc.model.Message"/>
 		<typeAlias alias="SignRecord" type="com.springmvc.model.SignRecord" />
+		<typeAlias alias="Notice" type="com.springmvc.model.Notice" />
 	</typeAliases>
 	
 	<!-- 映射map -->

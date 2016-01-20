@@ -7,6 +7,7 @@
 					</div>
 
 					<div class="ace-settings-box" id="ace-settings-box">
+						<!--  
 						<div>
 							<div class="pull-left">
 								<select id="skin-colorpicker" class="hide">
@@ -18,6 +19,7 @@
 							</div>
 							<span>&nbsp; 更换皮肤</span>
 						</div>
+						-->
 
 						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
@@ -26,17 +28,19 @@
 
 						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
-							<label class="lbl" for="ace-settings-sidebar">固定滑动条</label>
+							<label class="lbl" for="ace-settings-sidebar">固定左栏(非移动端)</label>
 						</div>
-
+						
+						<!-- 
 						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
 							<label class="lbl" for="ace-settings-rtl">切换到左边</label>
 						</div>
-
+						 -->
+						 
 						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
-							<label class="lbl" for="ace-settings-add-container">切换窄屏</label>
+							<label class="lbl" for="ace-settings-add-container">切换窄屏(非移动端)</label>
 						</div>
 					</div>
 				</div><!-- /#ace-settings-container -->

@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.springmvc.model.Course;
+import com.springmvc.model.Notice;
 import com.springmvc.model.SignRecord;
 import com.springmvc.model.User;
 import com.springmvc.model.User_infos;
 import com.springmvc.service.ICourseService;
+import com.springmvc.service.INoticeService;
 import com.springmvc.service.ISignRecordService;
 import com.springmvc.service.IUser_infosService;
 
@@ -56,6 +58,10 @@ public class CourseController extends BaseController{
 			}
 		}catch(Exception e){ }
 		
+		/** 获取课程公告 */
+		INoticeService noticeService = (INoticeService) this.context.getBean("noticeServiceImpl");
+		List<Notice> notices = noticeService.getNoticeByCourse_id(course_id);
+		model.addAttribute("notices", notices);
 		return "myCourse";
 	}
 	
