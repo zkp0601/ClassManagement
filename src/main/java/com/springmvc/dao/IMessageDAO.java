@@ -17,5 +17,8 @@ public interface IMessageDAO {
 	public List<Message> selectMessagesBySenderAndReceiverId(@Param("sender_id")int sender_id, @Param("receiver_id")int receiver_id);
 	
 	/** 通过信息状态查询两者间的聊天信息 */
-	public List<Message> selectMessagesByIs_read(int sender_id, int receiver_id, int is_read);
+	public List<Message> selectMessagesByIs_read(@Param("receiver_id") int receiver_id, @Param("is_read") int is_read);
+	
+	/** 将两者聊天信息设为已读 */
+	public void updateUnreadMessage(@Param("sender_id")int sender_id, @Param("receiver_id") int receiver_id);
 }

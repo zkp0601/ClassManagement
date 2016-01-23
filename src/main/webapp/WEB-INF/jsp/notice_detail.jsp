@@ -50,6 +50,9 @@
 				<div id="timeline-1" class="">
 					<div class="row">
 						<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+							<c:if test="${notices_list.size()==0}">
+								<div style="color:#5D5757; font-size:20px; text-align:center;">暂无公告</div>
+							</c:if>
 							<c:forEach items="${notices_list}" var="notice_item">
 								<div class="timeline-container" id="notice_detail_${notice_item._notice.notice_id}">
 									<div class="timeline-label">
@@ -169,7 +172,7 @@
 				</tr>
 				<tr>
 					<td style="margin:auto;text-align:center;">公告内容:</td>
-					<td><textarea type="text" id="notice_content_input" style="width:100%;"></textarea>
+					<td><textarea type="text" id="notice_content_input" style="width:100%;resize:none;"></textarea>
 				</tr>
 				<tr>
 					<td style="margin:auto;text-align:center;">过期时间:</td>
@@ -263,6 +266,7 @@
 		if(oper == "edit"){
 			document.getElementById("content_editable_"+notice_id).disabled="";
 			document.getElementById("subject_editable_"+notice_id).disabled="";
+			document.getElementById("content_editable_"+notice_id).focus();
 		}
 		
 		if(oper == "save"){

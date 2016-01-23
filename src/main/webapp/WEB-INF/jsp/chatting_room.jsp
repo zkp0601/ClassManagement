@@ -31,7 +31,7 @@
 											<img alt="John's Avatar" src='<c:url value="/img/avatars/avatar.jpg"></c:url>'>
 										</div>
 
-										<div class="body">
+										<div class="body" <c:if test="${message.sender_id==user.user_id}">style="background-color:#D1F9D1;"</c:if>>
 											<div class="time">
 												<i class="icon-time"></i> <span class="blue">${message.send_time}</span>
 											</div>
@@ -184,6 +184,21 @@
 					sender_id = r.user_id;
 					username = r.username;
 				}
+			}
+		});
+		
+		/** 打开聊天窗口之后，将所有聊天记录设成已读 */
+		var receiver_id = ${user.user_id};
+		var requestParams = getUrlParameters();
+		var sender_id = requestParams["receiver_id"];
+		
+		$.ajax({
+			url: "/ClassManagement/message/updateUnreadStatus",
+			data : {sender_id : sender_id, receiver_id : receiver_id},
+			type:"post",
+			
+			success : function(){
+				
 			}
 		});
 		

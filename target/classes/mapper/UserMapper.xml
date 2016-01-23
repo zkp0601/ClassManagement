@@ -15,4 +15,8 @@
 	<select id="selectUser_nameById" parameterType="int" resultType="String">
 		SELECT username FROM users WHERE user_id=#{user_id}
 	</select>
+	
+	<select id="selectUser_namesByIds" resultType="User">
+		SELECT user_id, username FROM users WHERE user_id IN (<foreach collection="array" index="index" item="user_id" separator=", ">#{user_id}</foreach>)
+	</select>
 </mapper>

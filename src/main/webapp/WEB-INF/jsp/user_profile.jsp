@@ -50,7 +50,7 @@
 									<i class="icon-remove"></i>
 								</button>
 	
-								<i class="icon-exclamation-sign bigger-120 green"></i> 点击头像可进行编辑
+								<i class="icon-exclamation-sign bigger-120 green"></i> 点击头像可进行修改
 								...
 							</div>
 						</div>
@@ -311,8 +311,9 @@
 													thumb = $('#avatar')
 															.next().find('img')
 															.data('thumb');
-													if (thumb)
+													if (thumb){
 														 $('#avatar').get(0).src = thumb;
+													}
 													
 												}
 
@@ -353,8 +354,9 @@
 		});
 		
 		// 开启聊天窗口
+		var receiver_id = ${user_info.user_id};
 		$('#show_chatting_room_btn').on('click', function(){
-			window.open('/ClassManagement/user/chatting', 'newwindow', 
+			window.open('/ClassManagement/user/chatting?receiver_id='+receiver_id, 'newwindow', 
 					'height=420px, width=600px, top=200px, left=400px, toolbar=no, menubar=no, scrollbars=no, resizable=true, location=no, status=no');
 		});
 		
