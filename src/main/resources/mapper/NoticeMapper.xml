@@ -23,4 +23,8 @@
 	<delete id="deleteNotice" parameterType="int">
 		DELETE FROM notice WHERE notice_id=#{notice_id}
 	</delete>
+	
+	<select id="getNoticesByCourse_ids" resultType="Notice">
+		SELECT * FROM notice WHERE course_id IN (<foreach collection="array" index="index" item="course_id" separator=", ">#{course_id}</foreach>)
+	</select>
 </mapper>

@@ -14,4 +14,6 @@ public interface INoticeService {
 	public void deleteNotice(int notice_id);
 	
 	public int updateContentAndSubjectById(int notice_id, String content, String subject);
+	
+	public List<Notice> getNoticesByCourse_ids(int[] course_ids);
 }

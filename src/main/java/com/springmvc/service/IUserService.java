@@ -1,4 +1,5 @@
 package com.springmvc.service;
+import java.util.List;
 import java.util.Map;
 
 import com.springmvc.model.User;
@@ -19,4 +20,6 @@ public interface IUserService {
 	
 	/** 根据id更新用户 */
 	public void updateUserById(int user_id);
+	
+	public List<User> selectUser_namesByIds(int[] user_ids);
 }

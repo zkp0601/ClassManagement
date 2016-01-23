@@ -1,8 +1,10 @@
 package com.springmvc.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springmvc.model.Course;
+import com.springmvc.model.Message;
+import com.springmvc.model.Notice;
 import com.springmvc.model.SignRecord;
 import com.springmvc.model.User;
 import com.springmvc.model.User_infos;
 import com.springmvc.service.ICourseService;
 import com.springmvc.service.ISignRecordService;
+import com.springmvc.service.IUserService;
 import com.springmvc.service.IUser_infosService;
 
 @Controller
@@ -50,6 +55,7 @@ public class IndexController extends BaseController{
 			List<Course> course_infos = courseService.selectCourseByIDs(course_ids);
 			model.addAttribute("course_infos", course_infos);
 			model.addAttribute("is_teacher", session.getAttribute("is_teacher"));
+			
 			return "index";
 		}else {
 			//未登录跳转至登录界面
@@ -134,5 +140,101 @@ public class IndexController extends BaseController{
 		}
 		
 		return data;
+	}
+	
+	/** 获取未读消息 */
+	@RequestMapping(value={"/getUnreadMessageStatistic"})
+	@ResponseBody
+	public Map<Integer, Map<String, String>> getUnreadMessageStatistic(HttpSession session){
+		User user = (User) session.getAttribute("currentUser");
+		int receiver_id = user.getUser_id();
+		int is_read = 0;
+		Map<Integer, List<Message>> allMessages = this.getUnreadMessageByReceiver_id(receiver_id, is_read);
+		
+		/** 当前所有发送消息的用户的id，通过这些id可以获取name */
+		int[] user_ids = new int[100];
+		Iterator it = allMessages.entrySet().iterator();
+		int index = 0;
+		while(it.hasNext()){
+			Map.Entry<Integer, String> entry = (Entry<Integer, String>) it.next();
+			user_ids[index++] = entry.getKey();
+		}
+		IUserService userService = (IUserService) this.context.getBean("userServiceImpl");
+		List<User> names = userService.selectUser_namesByIds(user_ids);
+		Map<Integer, String> user_name_maps = new HashMap<Integer, String>();
+		for(int i = 0; i < names.size(); i++){
+			user_name_maps.put(names.get(i).getUser_id(), names.get(i).getUsername());
+		}
+		
+		Map<Integer, Map<String, String>> result = new HashMap<Integer, Map<String, String>>();
+		it = allMessages.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Integer, List<Message>> entry = (Entry<Integer, List<Message>>) it.next();
+			
+			Map<String,  String> temp = new HashMap<String, String>();
+			temp.put("sender_id", entry.getKey()+"");
+			temp.put("sender_name", user_name_maps.get(entry.getKey()));
+			temp.put("message_num", entry.getValue().size()+"");
+			temp.put("date", entry.getValue().get(0).getSend_time());
+			result.put(entry.getKey(), temp);
+		}
+
+		return result;
+	}
+	
+	/** 获取所有课程公告 */
+	@RequestMapping(value={"/getAllNoticesStatistic"})
+	@ResponseBody
+	public Map<Integer, Map<String, String>> getAllNotice(HttpSession session){
+		User user = (User) session.getAttribute("currentUser");
+		int user_id = user.getUser_id();
+		
+		Map<Integer, List<Notice>> notices = this.getAllNoticesByUser_id(user_id);
+		
+		// 获取所有课程的名字
+		int[] course_ids = new int[100];
+		Iterator it = notices.entrySet().iterator();
+		int count = 0;
+		while(it.hasNext()){
+			Map.Entry<Integer, List<Notice>> entry = (Entry<Integer, List<Notice>>) it.next();
+			System.out.println("course_id:"+entry.getKey());
+			course_ids[count++] = entry.getKey();
+		}
+		ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
+		List<Course> courses = courseService.selectCourseByIDs(course_ids);
+		
+		/** 将课程id跟课程名称对应起来，存在一个map中 */
+		Map<Integer,String> course_name = new HashMap<Integer, String>();
+		for(int i = 0; i < courses.size(); i++){
+			Course course = courses.get(i);
+			course_name.put(course.getCourse_id(), course.getCourse_name());
+		}
+		Map<Integer, Map<String, String>> result = new HashMap<Integer, Map<String, String>>();
+		it = notices.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Integer, List<Notice>> entry = (Entry<Integer, List<Notice>>) it.next();
+			Map<String, String> temp = new HashMap<String, String>();
+			List<Notice> item_list = entry.getValue();
+			int course_id = item_list.get(0).getCourse_id();
+			temp.put("course_id", course_id+"");
+			temp.put("notice_num", item_list.size()+"");
+			temp.put("course_name", course_name.get(course_id));
+			result.put(course_id, temp);
+		}
+		return result;
+	}
+	
+	/** 获取个人的所有课程信息 */
+	@RequestMapping(value={"/getAllCourse_infos"})
+	@ResponseBody
+	public List<Course> getAllCourse_infos(HttpSession session){
+		User_infos user_info = (User_infos) session.getAttribute("currentUser_info");
+		String[] course_list = user_info.getCourseList().split("\\|");
+		ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
+		int[] course_ids = new int[100];
+		for(int index = 1; index < course_list.length; index++){
+			course_ids[index] = Integer.parseInt(course_list[index]);
+		}
+		return courseService.selectCourseByIDs(course_ids);
 	}
 }

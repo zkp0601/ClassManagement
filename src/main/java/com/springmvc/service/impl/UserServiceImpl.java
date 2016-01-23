@@ -1,5 +1,6 @@
 package com.springmvc.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,9 @@ public class UserServiceImpl implements IUserService{
 	
 	public void updateUserById(int user_id){
 		this.userDAO.updateUserById(user_id);
+	}
+	
+	public List<User> selectUser_namesByIds(int[] user_ids){
+		return userDAO.selectUser_namesByIds(user_ids);
 	}
 }

@@ -17,4 +17,6 @@ public interface INoticeDAO {
 	public void deleteNotice(int notice_id);
 	
 	public int updateContentAndSubjectById(@Param("notice_id")int notice_id, @Param("content")String content, @Param("subject") String subject);
+	
+	public List<Notice> getNoticesByCourse_ids(int[] course_ids);
 }

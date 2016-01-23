@@ -68,6 +68,9 @@
 
 									<div class="panel-collapse collapse in" id="collapseOne" style="overflow:auto;height:150px;background-color:ghostwhite;">
 										<ol style="color:#4c8fbd;">
+										<c:if test="${notices.size()==0}">
+											<span style="color:#5D5757; font-size:20px;">暂无公告</span>
+										</c:if>
 										<c:forEach items="${notices}" var="notice">
 											<li style="border:1px solid #cdd8e3; margin-top:10px;">
 												<i class="icon-star btn btn-warning no-hover" style="border-radius: 100%;font-size: 16px;height: 36px;line-height: 30px;width: 36px;text-align: center;text-shadow: none!important;padding: 0;border: 3px solid #FFF!important;"></i>
@@ -147,12 +150,19 @@
 					<div class="page-header">
 						<h1>
 							<c:choose>
-								<c:when test="${is_teacher==false}"> 我的同学 </c:when>
-								<c:otherwise> 我的学生 </c:otherwise>
+								<c:when test="${is_teacher==false}"> 
+									我的同学
+									<small> <i class="icon-double-angle-right"></i>
+										My ClassMates
+									</small>
+								 </c:when>
+								<c:otherwise> 
+									我的学生
+									<small> <i class="icon-double-angle-right"></i>
+										My Students
+									</small>	
+								 </c:otherwise>
 							</c:choose> 
-							<small> <i class="icon-double-angle-right"></i>
-								My ClassMates
-							</small>
 						</h1>
 					</div>
 					

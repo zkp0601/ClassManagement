@@ -36,4 +36,8 @@ public class NoticeServiceImpl implements INoticeService{
 	public int updateContentAndSubjectById(int notice_id, String content, String subject){
 		return noticeDAO.updateContentAndSubjectById(notice_id, content, subject);
 	}
+	
+	public List<Notice> getNoticesByCourse_ids(int[] course_ids){
+		return noticeDAO.getNoticesByCourse_ids(course_ids);
+	}
 }
