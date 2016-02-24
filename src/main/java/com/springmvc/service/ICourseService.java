@@ -18,4 +18,7 @@ public interface ICourseService {
 	
 	/** 通过多个course_id获取多个课程信息 */
 	public List<Course> selectCourseByIDs(int course_ids[]);
+	
+	/** 选择所有的课程 */
+	public List<Course> selectUnaddedCourses(String[] addedCourses);
 }

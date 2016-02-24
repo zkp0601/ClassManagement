@@ -94,7 +94,7 @@
 											</tr>
 										</c:forEach>
 										<c:if test="${records_size==0}">
-											<tr><td><span class="label">暂无数据</span></td><td>111</td><td>222</td><td>333</td></tr>
+											<tr><td colspan="4" style="text-align:center;"><span class="label label-info">暂无数据</span></td></tr>
 										</c:if>
 									</tbody>
 								</table>

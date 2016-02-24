@@ -171,7 +171,8 @@
 		}
 		
 		// 利用ajax去获取服务端的session值
-		var sender_id = null;
+		var message_sender_id = null;
+		var message_receiver_id = null;
 		var username = null;
 		$.ajax({
 			url: "/ClassManagement/user/getCurrentUserFromSession",
@@ -181,7 +182,7 @@
 			async: false,
 			success : function(r){
 				if(r.user_id){
-					sender_id = r.user_id;
+					message_sender_id = r.user_id;
 					username = r.username;
 				}
 			}
@@ -212,7 +213,7 @@
 			if(window.opener.ws != null){
 				var requestParams = getUrlParameters();
 				
-				message["sender_id"] = sender_id;
+				message["sender_id"] = message_sender_id;
 				message["sender_username"] = username;
 				message["receiver_id"] = requestParams["receiver_id"];
 				message["send_time"] = getTime();
@@ -226,7 +227,7 @@
 							'<img alt="John\'s Avatar" src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\'>'+
 						'</div>'+
 
-						'<div class="body">'+
+						'<div class="body" style="background-color:#D1F9D1;">'+
 							'<div class="time">'+
 								'<i class="icon-time"></i> <span class="blue">'+ message["send_time"] +'</span>'+
 							'</div>'+

@@ -18,4 +18,7 @@ public interface ICourseDAO {
 	
 	/** 通过多个course_id获取多个课程信息 */
 	public List<Course> selectCourseByIDs(int course_ids[]);
+	
+	/** 获取用户所有未添加的课程 */
+	public List<Course> selectUnaddedCourses(String[] addedCourses);
 }

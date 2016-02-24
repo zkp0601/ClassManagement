@@ -60,20 +60,22 @@ public class UserController extends BaseController{
 		}
 		
 		// user_id参数为空或者与当前用户id相同时，说明是查看自己信息
+		model.addAttribute("user_name", currentUser.getUsername());
 		if( request_id==null || currentUser_id == user_id){
-			model.addAttribute("user_name", currentUser.getUsername());
 			model.addAttribute("myself", true);
+			model.addAttribute("target_user_name", currentUser.getUsername());
 		}else{
 			IUserService userService = (IUserService) this.context.getBean("userServiceImpl");
 			String user_name = userService.selectUser_nameById(user_id);
 			// 所要查看的用户不存在
 			if(user_name == null)
 				return "404_error";
-			model.addAttribute("user_name", user_name);
+			model.addAttribute("target_user_name", user_name);
 		}
 		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
 		User_infos user_info = user_infosService.selectUser_infosByID(user_id);
-		model.addAttribute("user_info", user_info);
+		model.addAttribute("target_user_info", user_info);
+		model.addAttribute("user_info", request.getSession().getAttribute("currentUser_info"));
 		
 		return "user_profile";
 	}

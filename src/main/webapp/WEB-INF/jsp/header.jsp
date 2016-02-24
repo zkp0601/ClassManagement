@@ -57,7 +57,7 @@
 		<script src='<c:url value="/js/sockjs.min.js"></c:url>'></script>
 		<script type="text/javascript">
 			// websocket 实现
-			var url = "ws://192.168.0.107:8080/ClassManagement/websocket";
+			var url = "ws://192.168.1.109:8080/ClassManagement/websocket";
 			var ws = new WebSocket(url);
 			
 		</script>
