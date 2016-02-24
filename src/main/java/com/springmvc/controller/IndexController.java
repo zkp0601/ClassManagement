@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,10 +65,39 @@ public class IndexController extends BaseController{
 		}
 	}
 	
-	/** 首页添加课程 */
-	@RequestMapping("/add")
-	public String addCourse(){
-		return "addCourse";	
+	/** 首页老师发布课程或者学生添加课程 
+	 * @throws IOException */
+	@RequestMapping(value={"/publish", "/add"})
+	public String addCourse(HttpSession session, Model model, HttpServletResponse response) throws IOException{
+		User_infos user_info = (User_infos) session.getAttribute("currentUser_info");
+		if(user_info == null){
+			response.sendRedirect("/ClassManagement/index");
+			return null;
+		}
+		model.addAttribute("user_info", user_info);
+		boolean is_teacher = (boolean) session.getAttribute("is_teacher");
+		
+		/** 若非老师，则只添加课程至个人列表中，否则是新发布课程 */
+		if(!is_teacher){
+			String courseList = user_info.getCourseList();
+			String addedCourses[] = courseList.split("|");
+			ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
+			List<Course> allUnaddedCourses = courseService.selectUnaddedCourses(addedCourses);
+			model.addAttribute("allUnaddedCourses", allUnaddedCourses);
+			
+			/** 获取已添加课程信息 */
+			int temp[] = new int[100];
+			for(int i = 0; i < addedCourses.length; i++){
+				if(addedCourses[i].equals("") || addedCourses[i].equals("|")){
+					continue;
+				}
+				temp[i] = Integer.parseInt(addedCourses[i].toString());
+			}
+			List<Course> allAddedCourses = courseService.selectCourseByIDs(temp);
+			model.addAttribute("allAddedCourses", allAddedCourses);
+			return "addCourse";
+		}
+		return "publishCourse";	
 	}
 	
 	/** 查看日历 */
@@ -147,6 +177,8 @@ public class IndexController extends BaseController{
 	@ResponseBody
 	public Map<Integer, Map<String, String>> getUnreadMessageStatistic(HttpSession session){
 		User user = (User) session.getAttribute("currentUser");
+		if(user == null)
+			return null;
 		int receiver_id = user.getUser_id();
 		int is_read = 0;
 		Map<Integer, List<Message>> allMessages = this.getUnreadMessageByReceiver_id(receiver_id, is_read);
@@ -187,6 +219,8 @@ public class IndexController extends BaseController{
 	@ResponseBody
 	public Map<Integer, Map<String, String>> getAllNotice(HttpSession session){
 		User user = (User) session.getAttribute("currentUser");
+		if(user == null)
+			return null;
 		int user_id = user.getUser_id();
 		
 		Map<Integer, List<Notice>> notices = this.getAllNoticesByUser_id(user_id);
@@ -229,6 +263,8 @@ public class IndexController extends BaseController{
 	@ResponseBody
 	public List<Course> getAllCourse_infos(HttpSession session){
 		User_infos user_info = (User_infos) session.getAttribute("currentUser_info");
+		if(user_info == null)
+			return null;
 		String[] course_list = user_info.getCourseList().split("\\|");
 		ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
 		int[] course_ids = new int[100];

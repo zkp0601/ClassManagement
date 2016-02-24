@@ -127,7 +127,7 @@
 						var message_unread_show = 
 							'<li class="dropdown-header" style="background-color:#E3FBED!important;color:#412E50;">'+
 								'<i class="icon-comment"></i>'+
-								'Received Messages'+
+								'消息提示'+
 							'</li>';
 						$.each(r,function(key,value){ 
 							count++;
@@ -171,7 +171,7 @@
 						var all_notices_show = 
 							'<li class="dropdown-header">'+
 								'<i class="icon-warning-sign"></i>'+
-								'All Notices'+
+								'课程公告'+
 							'</li>';
 						for( var item in r){
 							total_notice_num += r[item].notice_num;
@@ -208,7 +208,7 @@
 						var all_my_courses = 
 							'<li class="dropdown-header">'+
 								'<i class="icon-ok"></i>'+
-								'All My Courses'+
+								'所有课程'+
 							'</li>';
 						for( var item in r ){
 							all_my_courses +=

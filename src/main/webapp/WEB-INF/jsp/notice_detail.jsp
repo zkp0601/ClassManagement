@@ -39,9 +39,11 @@
 					<i class="icon-double-angle-right"></i>
 					&nbsp;Notice Detail
 				</small>
-				<button class="btn btn-app btn-info pull-right" data-toggle="modal" data-target="#add_notice_page" id="add_notice" style="padding:2px 12px;font-size:15px;">
-					添加公告
-				</button>
+				<c:if test="${is_teacher==true}">
+					<button class="btn btn-app btn-info pull-right" data-toggle="modal" data-target="#add_notice_page" id="add_notice" style="padding:2px 12px;font-size:15px;">
+						添加公告
+					</button>
+				</c:if>
 			</h1>
 		</div>
 

@@ -112,6 +112,9 @@ public class SignController extends BaseController{
 			for(int i = 0; i < allSignRecords.size(); i++){
 				SignRecord signRecord = allSignRecords.get(i);
 				int stu_id = signRecord.getUser_id();
+				if(stu_id == user_id){
+					continue;
+				}
 				if(records.containsKey(stu_id) && (signRecord.getSignInTime()!=0 || signRecord.getSignOutTime()!=0)){
 					/** 计算出勤记录 */
 					Map<String, String> temp = records.get(stu_id);

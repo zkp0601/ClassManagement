@@ -151,9 +151,9 @@
 						<h1>
 							<c:choose>
 								<c:when test="${is_teacher==false}"> 
-									我的同学
+									我的老师 & 同学
 									<small> <i class="icon-double-angle-right"></i>
-										My ClassMates
+										My Teacher & Classmates
 									</small>
 								 </c:when>
 								<c:otherwise> 
@@ -165,7 +165,9 @@
 							</c:choose> 
 						</h1>
 					</div>
-					
+					<c:if test="${user_infos.size()==0}">
+						<span style="color:#5D5757; font-size:20px;">暂无学生</span>
+					</c:if>
 					<c:forEach items="${user_infos}" var="classmate_info">
 						<c:if test="${classmate_info.user_id !=  user_info.user_id}">
 							<table style="border:1px solid #cdd8e3;display:block; float:left;margin:10px;">
@@ -173,9 +175,13 @@
 									<th class="ace-nav" style="line-height:45px;height: 45px;">
 										<img class="nav-user-photo" src='<c:url value="/img/avatars/user.jpg"></c:url>' alt="Kalper's Photo" />
 									</th>
-									<th style="color:#2679b5;">${classmate_info.name}</th>
+									<th style="color:#2679b5;width:60px;">
+										<c:if test="${classmate_info.personal_num<10000000}">
+											<i class="icon-star orange"></i>
+										</c:if>
+										${classmate_info.name}</th>
 									<th style="padding-left:10px;">
-										<a href='/ClassManagement/user/profile?user_id=${classmate_info.user_id}'><button class="btn btn-primary" style="padding:3px 8px;">查看资料</button>
+										<a href='/ClassManagement/user/profile?user_id=${classmate_info.user_id}'><button class="btn btn-primary" style="padding:3px 8px">查看资料</button></a>
 										<a href='#' onclick='openChattingRoom(${classmate_info.user_id})'><button class="btn btn-primary" style="padding:3px 8px;">发起聊天</button></a>
 									</th>
 								</tr>
@@ -254,6 +260,11 @@
 				var late_percent = (resultMap.lateSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
 				var earlyLeave_percent = (resultMap.earlyLeaveSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
 				
+				if(isNaN(finish_class_percent)){
+					finish_class_percent = 0;
+					late_percent = 0;
+					earlyLeave_percent = 0;
+				}
 				$('#present_percent').attr('data-percent', Math.round(finish_class_percent));
 				$('#late_percent').attr('data-percent', Math.round(late_percent));
 				$('#earlyLeave_percent').attr('data-percent', Math.round(earlyLeave_percent));

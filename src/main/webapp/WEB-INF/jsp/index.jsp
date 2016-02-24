@@ -65,12 +65,14 @@
 								</a>
 							</c:forEach>
 						</h4>
-						<button class="btn btn-app btn-success" id="publish_new_course" style="font-size: 15px; margin-top: 10px;">
-							<c:choose>
-								<c:when test="${is_teacher==true}">点此发布</c:when>
-								<c:otherwise>点此添加</c:otherwise>
-							</c:choose>
-						</button>
+						<c:choose>
+							<c:when test="${is_teacher==true}">
+								<button class="btn btn-app btn-success" id="publish_new_course" style="font-size: 15px; margin-top: 10px;">点此发布</button>
+							</c:when>
+							<c:otherwise>
+								<button class="btn btn-app btn-success" id="add_new_course" style="font-size: 15px; margin-top: 10px;">点此添加</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 
@@ -334,6 +336,10 @@
 	})
 
 	$('#publish_new_course').click(function(){
+		window.location.href = "/ClassManagement/index/publish";
+	})
+	
+	$('#add_new_course').click(function(){
 		window.location.href = "/ClassManagement/index/add";
 	})
 	
