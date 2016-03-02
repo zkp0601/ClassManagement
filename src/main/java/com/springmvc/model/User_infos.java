@@ -8,19 +8,19 @@ public class User_infos {
 	private String sex;
 	private String phone_num;
 	private String email;
-	private String head_URL;
+	private String img_url;
 	
 	public User_infos(){
 		
 	}
-	public User_infos(String name, String personal_num, String courseList, String sex, String phone_num, String email, String head_URL){
+	public User_infos(String name, String personal_num, String courseList, String sex, String phone_num, String email, String img_URL){
 		this.name = name;
 		this.personal_num = personal_num;
 		this.courseList = courseList;
 		this.sex = sex;
 		this.phone_num = phone_num;
 		this.email = email;
-		this.head_URL = head_URL;
+		this.img_url = img_URL;
 	}
 	public int getUser_id() {
 		return user_id;
@@ -64,10 +64,10 @@ public class User_infos {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public void setHead_URL(String head_URL){
-		this.head_URL = head_URL;
+	public void setImg_url(String img_url){
+		this.img_url = img_url;
 	}
-	public String getHead_URL(){
-		return head_URL;
+	public String getImg_url(){
+		return img_url;
 	}
 }

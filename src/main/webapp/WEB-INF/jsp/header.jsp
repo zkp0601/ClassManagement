@@ -57,7 +57,7 @@
 		<script src='<c:url value="/js/sockjs.min.js"></c:url>'></script>
 		<script type="text/javascript">
 			// websocket 实现
-			var url = "ws://192.168.1.109:8080/ClassManagement/websocket";
+			var url = "ws://192.168.137.11:8080/ClassManagement/websocket";
 			var ws = new WebSocket(url);
 			
 		</script>
@@ -123,7 +123,7 @@
 
 								<li>
 									<a href="#">
-										<img src='<c:url value="/img/avatars/avatar.jpg"></c:url>' class="msg-photo" alt="Alex's Avatar" />
+										<img src='<c:url value="/${user_info.img_url}"></c:url>' class="msg-photo" alt="Alex's Avatar" />
 										<span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Alex:</span>
@@ -149,7 +149,7 @@
 
 						<li class="light-blue">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src='<c:url value="/img/avatars/user.jpg"></c:url>' alt="Kalper's Photo" />
+								<img class="nav-user-photo" id="header_img" src='<c:url value="/${user_info.img_url}"></c:url>' alt="Kalper's Photo" />
 								${user_info.name}
 								<i class="icon-caret-down"></i>
 							</a>

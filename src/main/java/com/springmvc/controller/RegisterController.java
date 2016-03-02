@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springmvc.model.User;
 import com.springmvc.model.User_infos;
@@ -46,6 +47,10 @@ public class RegisterController extends BaseController{
 			int info_insert_result = user_infosService.insertUser_infos(info);
 			
 			if( info_insert_result > 0 ){
+				/** 设置随机头像 */
+				String img_url = "/img/avatars/avatar" + (info_insert_result%6) + ".jpg";
+				info.setImg_url(img_url);
+				user_infosService.updateUser_infosByID(info);
 				System.out.println("注册成功");
 			}
 			model.addAttribute("register", "register_success");

@@ -61,7 +61,7 @@
 							<div>
 								<span class="profile-picture"> <img id="avatar"
 									class="editable img-responsive" alt="Alex's Avatar"
-									src='<c:url value="/img/avatars/profile-pic.jpg"></c:url>' />
+									src='<c:url value="${target_user_info.img_url}"></c:url>' />
 								</span>
 
 								<div class="space-4"></div>
@@ -311,6 +311,15 @@
 													thumb = $('#avatar')
 															.next().find('img')
 															.data('thumb');
+
+													$.ajax({
+														url:"/ClassManagement/img/decode",
+														data : {imgBase64Str : thumb},
+														type:'post',
+														success : function(r){
+															$('#header_img').attr('src', '<c:url value="'+r+'"></c:url>');
+														}
+													});
 													if (thumb){
 														 $('#avatar').get(0).src = thumb;
 													}

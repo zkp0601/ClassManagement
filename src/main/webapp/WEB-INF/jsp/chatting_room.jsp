@@ -24,11 +24,18 @@
 						<div class="slimScrollDiv"
 							style="position: relative; overflow: hidden; width: auto; height: 300px;">
 							<div class="dialogs" id="dialogs" style="overflow: hidden; width: auto; height: 300px; overflow: scroll;">
-
+								
 								<c:forEach items="${allMessages}" var="message">
 									<div class="itemdiv dialogdiv">
 										<div class="user">
-											<img alt="John's Avatar" src='<c:url value="/img/avatars/avatar.jpg"></c:url>'>
+											<c:choose>
+												<c:when test="${message.sender_id==user.user_id}">
+													<img alt="John's Avatar" src='<c:url value="${sender_info.img_url}"></c:url>'>
+												</c:when>
+												<c:otherwise>
+													<img alt="John's Avatar" src='<c:url value="${receiver_info.img_url}"></c:url>'>
+												</c:otherwise>
+											</c:choose>
 										</div>
 
 										<div class="body" <c:if test="${message.sender_id==user.user_id}">style="background-color:#D1F9D1;"</c:if>>
@@ -55,7 +62,7 @@
 										</div>
 									</div>
 								</c:forEach>
-								
+								<div style="text-align:center;color:gray;padding-bottom:10px;">无更多历史消息</div>
 							</div>
 							<div class="slimScrollBar ui-draggable"
 								style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 252.809px; background: rgb(0, 0, 0);"></div>
@@ -108,7 +115,7 @@
 			var item = 
 				'<div class="itemdiv dialogdiv">'+
 					'<div class="user">' +
-						'<img alt="John\'s Avatar" src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\'>'+
+						'<img alt="John\'s Avatar" src=\'<c:url value="'+'${receiver_info.img_url}'+'"></c:url>\'>'+
 					'</div>'+
 
 					'<div class="body">'+
@@ -224,7 +231,7 @@
 				var item = 
 					'<div class="itemdiv dialogdiv">'+
 						'<div class="user">' +
-							'<img alt="John\'s Avatar" src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\'>'+
+							'<img alt="John\'s Avatar" src=\'<c:url value="/'+'${sender_info.img_url}'+'"></c:url>\'>'+
 						'</div>'+
 
 						'<div class="body" style="background-color:#D1F9D1;">'+

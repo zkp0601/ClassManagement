@@ -91,6 +91,10 @@ public class UserController extends BaseController{
 		String receiver_name = userService.selectUser_nameById(receiver_id);
 		model.addAttribute("receiver_name", receiver_name);
 		
+		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+		model.addAttribute("sender_info", user_infosService.selectUser_infosByID(sender_id));
+		model.addAttribute("receiver_info", user_infosService.selectUser_infosByID(receiver_id));
+		
 		IMessageService messageService = (IMessageService)this.context.getBean("messageServiceImpl");
 		List<Message> allMessages = messageService.selectMessagesBySenderAndReceiverId(sender_id, receiver_id);
 		model.addAttribute("allMessages", allMessages);

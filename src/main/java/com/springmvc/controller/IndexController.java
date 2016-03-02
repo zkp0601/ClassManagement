@@ -177,7 +177,6 @@ public class IndexController extends BaseController{
 	@ResponseBody
 	public Map<Integer, Map<String, String>> getUnreadMessageStatistic(HttpSession session){
 		User user = (User) session.getAttribute("currentUser");
-
 		if(user == null)
 			return null;
 		int receiver_id = user.getUser_id();
@@ -193,6 +192,12 @@ public class IndexController extends BaseController{
 			user_ids[index++] = entry.getKey();
 		}
 		IUserService userService = (IUserService) this.context.getBean("userServiceImpl");
+		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+		User_infos[] user_infos = user_infosService.selectUser_infosByIDs(user_ids);
+		Map<Integer, String> img_url_maps = new HashMap<Integer, String>();
+		for(int i = 0; i < user_infos.length; i++){
+			img_url_maps.put(user_infos[i].getUser_id(), user_infos[i].getImg_url());
+		}
 		List<User> names = userService.selectUser_namesByIds(user_ids);
 		Map<Integer, String> user_name_maps = new HashMap<Integer, String>();
 		for(int i = 0; i < names.size(); i++){
@@ -209,6 +214,7 @@ public class IndexController extends BaseController{
 			temp.put("sender_name", user_name_maps.get(entry.getKey()));
 			temp.put("message_num", entry.getValue().size()+"");
 			temp.put("date", entry.getValue().get(0).getSend_time());
+			temp.put("img_url", img_url_maps.get(entry.getKey()));
 			result.put(entry.getKey(), temp);
 		}
 
@@ -264,7 +270,6 @@ public class IndexController extends BaseController{
 	@ResponseBody
 	public List<Course> getAllCourse_infos(HttpSession session){
 		User_infos user_info = (User_infos) session.getAttribute("currentUser_info");
-
 		if(user_info == null)
 			return null;
 		String[] course_list = user_info.getCourseList().split("\\|");

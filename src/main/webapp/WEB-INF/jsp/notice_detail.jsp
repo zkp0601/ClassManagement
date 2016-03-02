@@ -66,7 +66,7 @@
 									<div class="timeline-items">
 										<div class="timeline-item clearfix">
 											<div class="timeline-info">
-												<img alt="Susan't Avatar" src='<c:url value="/img/avatars/avatar.jpg"></c:url>' />
+												<img alt="Susan't Avatar" src='<c:url value="/img/avatars/avatar2.jpg"></c:url>' />
 												<span class="label label-info label-sm">${notice_item._notice.time }</span>
 											</div>
 	

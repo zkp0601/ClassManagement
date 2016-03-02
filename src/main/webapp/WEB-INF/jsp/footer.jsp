@@ -126,14 +126,15 @@
 						var count = 0;
 						var message_unread_show = 
 							'<li class="dropdown-header" style="background-color:#E3FBED!important;color:#412E50;">'+
-								'<i class="icon-comment"></i>'+'消息提示'+
+								'<i class="icon-comment"></i>'+
+								'消息提示'+
 							'</li>';
 						$.each(r,function(key,value){ 
 							count++;
 							message_unread_show += 
 								'<li>'+
 									'<a href="#" onclick="openChattingRoom('+r[key].sender_id+')">'+
-										'<img src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\' class="msg-photo" alt="'+r[key].sender_name+'\'s Avatar" />'+
+										'<img src=\'<c:url value="/'+r[key].img_url+'"></c:url>\' class="msg-photo" alt="'+r[key].sender_name+'\'s Avatar" />'+
 										'<span class="msg-body">'+
 											'<span class="msg-title">'+
 												'<span class="blue">'+r[key].sender_name+':</span>'+
@@ -169,7 +170,8 @@
 						var total_notice_num = 0;
 						var all_notices_show = 
 							'<li class="dropdown-header">'+
-								'<i class="icon-warning-sign"></i>'+'课程公告'+
+								'<i class="icon-warning-sign"></i>'+
+								'课程公告'+
 							'</li>';
 						for( var item in r){
 							total_notice_num += r[item].notice_num;
@@ -205,7 +207,8 @@
 					success : function(r){
 						var all_my_courses = 
 							'<li class="dropdown-header">'+
-								'<i class="icon-ok"></i>'+'所有课程'+
+								'<i class="icon-ok"></i>'+
+								'所有课程'+
 							'</li>';
 						for( var item in r ){
 							all_my_courses +=

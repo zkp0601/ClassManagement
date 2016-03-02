@@ -150,7 +150,7 @@
 					<div class="page-header">
 						<h1>
 							<c:choose>
-								<c:when test="${is_teacher==false}">
+								<c:when test="${is_teacher==false}"> 
 									我的老师 & 同学
 									<small> <i class="icon-double-angle-right"></i>
 										My Teacher & Classmates
@@ -173,7 +173,7 @@
 							<table style="border:1px solid #cdd8e3;display:block; float:left;margin:10px;">
 								<tr>
 									<th class="ace-nav" style="line-height:45px;height: 45px;">
-										<img class="nav-user-photo" src='<c:url value="/img/avatars/user.jpg"></c:url>' alt="Kalper's Photo" />
+										<img class="nav-user-photo" src='<c:url value="${classmate_info.img_url}"></c:url>' alt="Kalper's Photo" />
 									</th>
 									<th style="color:#2679b5;width:60px;">
 										<c:if test="${classmate_info.personal_num<10000000}">
