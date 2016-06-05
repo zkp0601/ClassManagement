@@ -1,6 +1,7 @@
 <%@ include file="header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <div class="main-content">
 	<div class="breadcrumbs" id="breadcrumbs">
 		<script type="text/javascript">
@@ -46,29 +47,51 @@
 						<div class="col-sm-6">
 							<h3 class="header smaller lighter green">
 								&nbsp;<i class="icon-bullhorn"></i> 公告专栏
+								<small style="float:right;margin-top:12px;">
+									<a href="/ClassManagement/notice/index?course_id=${current_course.course_id}">
+										<i class="icon-hand-right">&nbsp;查看公告详情</i>
+									</a>
+								</small>
 							</h3>
 							<div id="notification" class="accordion-style1 panel-group">
-								<div class="panel panel-default">
+								<div class="panel panel-default" style="background-color:ghostwhite;">
 									<div class="panel-heading">
 										<h4 class="panel-title">
 											<a class="accordion-toggle" data-toggle="collapse"
 												data-parent="#accordion" href="#collapseOne"> <i
 												class="icon-angle-down bigger-110"
 												data-icon-hide="icon-angle-down"
-												data-icon-show="icon-angle-right"></i> &nbsp;Notification
+												data-icon-show="icon-angle-right"></i> &nbsp;<i class="icon-bell-alt icon-animated-bell"></i>&nbsp;&nbsp;Notification
 											</a>
 										</h4>
 									</div>
 
-									<div class="panel-collapse collapse in" id="collapseOne">
-										<div class="panel-body">Anim pariatur cliche
-											reprehenderit, enim eiusmod high life accusamus terry
-											richardson ad squid. 3 wolf moon officia aute, non cupidatat
-											skateboard dolor brunch. Food truck quinoa nesciunt laborum
-											eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on
-											it squid single-origin coffee nulla assumenda shoreditch et.
-											Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-											cred nesciunt sapiente ea proident.</div>
+									<div class="panel-collapse collapse in" id="collapseOne" style="overflow:auto;height:150px;background-color:ghostwhite;">
+										<ol style="color:#4c8fbd;">
+										<c:if test="${notices.size()==0}">
+											<span style="color:#5D5757; font-size:20px;">暂无公告</span>
+										</c:if>
+										<c:forEach items="${notices}" var="notice">
+											<li style="border:1px solid #cdd8e3; margin-top:10px;">
+												<i class="icon-star btn btn-warning no-hover" style="border-radius: 100%;font-size: 16px;height: 36px;line-height: 30px;width: 36px;text-align: center;text-shadow: none!important;padding: 0;border: 3px solid #FFF!important;"></i>
+												<span class="pull-right" style="padding:5px;">
+													<i class="icon-time green">&nbsp;${notice.date}&nbsp;${notice.time}&nbsp;</i>
+												</span>
+												<table style="width:100%; border-top:1px solid #cdd8e3;">
+													<tr>
+														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">发布者:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;"><i class="icon-user" style="color:#64A067!important;"></i>&nbsp;${notice.publisher}</td>
+													</tr>
+													<tr>
+														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">主题:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">#${notice.subject }#</td>
+													</tr>
+													<tr>
+														<td class="label label-danger" style="border:1px solid #cdd8e3;width:100%;">公告内容:</td><td style="font-weight:bold;color:#4c8fbd;padding-left:10px;">${notice.content}</td>
+													</tr>
+												</table>
+											</li>
+											<br/>
+										</c:forEach>
+										</ul>
 									</div>
 								</div>
 							</div>
@@ -79,7 +102,7 @@
 							<h3 class="header smaller lighter orange">
 								&nbsp;<i class="icon-trophy"></i> 考勤专栏
 								<small style="float:right;margin-top:12px;">
-									<a href="/ClassManagement/sign/signRecord?course_id=${current_course.course_id}"><i class="icon-hand-right">&nbsp;查看详情</i></a>
+									<a href="/ClassManagement/sign/signRecord?course_id=${current_course.course_id}"><i class="icon-hand-right">&nbsp;查看出勤详情</i></a>
 								</small>
 								<!-- /span -->
 							</h3>
@@ -111,9 +134,9 @@
 											</th>
 										</tr>
 										<tr style="border:none;">
-											<th style="text-align:center;"><button class="btn-app btn-success" id="signIn">今日签到</button></th>
+											<th style="text-align:center;"><button class="btn btn-inverse" id="signIn">今日签到</button></th>
 											<th style="text-align:center;">--</th>
-											<th style="text-align:center;"><button class="btn-app btn-success" id="signOut">今日签退</button></th>
+											<th style="text-align:center;"><button class="btn btn-inverse" id="signOut">今日签退</button></th>
 										</tr>
 									</tbody>
 								</table>
@@ -126,24 +149,40 @@
 				<div class="well" style="width:100%;background-color: ghostwhite;display:block; float:left;">
 					<div class="page-header">
 						<h1>
-							我的同学 
-							<small> <i class="icon-double-angle-right"></i>
-								My ClassMates
-							</small>
+							<c:choose>
+								<c:when test="${is_teacher==false}"> 
+									我的老师 & 同学
+									<small> <i class="icon-double-angle-right"></i>
+										My Teacher & Classmates
+									</small>
+								 </c:when>
+								<c:otherwise> 
+									我的学生
+									<small> <i class="icon-double-angle-right"></i>
+										My Students
+									</small>	
+								 </c:otherwise>
+							</c:choose> 
 						</h1>
 					</div>
-					
+					<c:if test="${user_infos.size()==0}">
+						<span style="color:#5D5757; font-size:20px;">暂无学生</span>
+					</c:if>
 					<c:forEach items="${user_infos}" var="classmate_info">
 						<c:if test="${classmate_info.user_id !=  user_info.user_id}">
 							<table style="border:1px solid #cdd8e3;display:block; float:left;margin:10px;">
 								<tr>
 									<th class="ace-nav" style="line-height:45px;height: 45px;">
-										<img class="nav-user-photo" src='<c:url value="/img/avatars/user.jpg"></c:url>' alt="Kalper's Photo" />
+										<img class="nav-user-photo" src='<c:url value="${classmate_info.img_url}"></c:url>' alt="Kalper's Photo" />
 									</th>
-									<th style="color:#2679b5;margin-right:10px;">${classmate_info.name}</th>
-									<th>
-										<a href='/ClassManagement/user/profile?user_id=${classmate_info.user_id}'><button class="btn-app btn-success">查看资料</button>
-										<a href='#' onclick='openChattingRoom(${classmate_info.user_id})'><button class="btn-app btn-success">发起聊天</button></a>
+									<th style="color:#2679b5;width:60px;">
+										<c:if test="${classmate_info.personal_num<10000000}">
+											<i class="icon-star orange"></i>
+										</c:if>
+										${classmate_info.name}</th>
+									<th style="padding-left:10px;">
+										<a href='/ClassManagement/user/profile?user_id=${classmate_info.user_id}'><button class="btn btn-primary" style="padding:3px 8px">查看资料</button></a>
+										<a href='#' onclick='openChattingRoom(${classmate_info.user_id})'><button class="btn btn-primary" style="padding:3px 8px;">发起聊天</button></a>
 									</th>
 								</tr>
 							</table>
@@ -221,6 +260,11 @@
 				var late_percent = (resultMap.lateSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
 				var earlyLeave_percent = (resultMap.earlyLeaveSignRecords.length / resultMap.total_class_num * 100).toFixed(1);
 				
+				if(isNaN(finish_class_percent)){
+					finish_class_percent = 0;
+					late_percent = 0;
+					earlyLeave_percent = 0;
+				}
 				$('#present_percent').attr('data-percent', Math.round(finish_class_percent));
 				$('#late_percent').attr('data-percent', Math.round(late_percent));
 				$('#earlyLeave_percent').attr('data-percent', Math.round(earlyLeave_percent));

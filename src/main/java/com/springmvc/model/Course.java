@@ -1,6 +1,10 @@
 package com.springmvc.model;
 
-public class Course {
+import java.io.Serializable;
+
+public class Course implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private int course_id;
 	private String course_name;
 	private String teacher_name;

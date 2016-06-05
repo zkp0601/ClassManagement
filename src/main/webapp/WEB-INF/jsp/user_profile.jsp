@@ -13,7 +13,7 @@
 
 		<ul class="breadcrumb">
 			<li><i class="icon-edit"></i> <a href="../user/profile">个人信息</a></li>
-			<li class="active">${user_info.name}</li>
+			<li class="active">${target_user_info.name}</li>
 		</ul>
 		<!-- .breadcrumb -->
 
@@ -50,7 +50,7 @@
 									<i class="icon-remove"></i>
 								</button>
 	
-								<i class="icon-exclamation-sign bigger-120 green"></i> 点击头像可进行编辑
+								<i class="icon-exclamation-sign bigger-120 green"></i> 点击头像可进行修改
 								...
 							</div>
 						</div>
@@ -61,7 +61,7 @@
 							<div>
 								<span class="profile-picture"> <img id="avatar"
 									class="editable img-responsive" alt="Alex's Avatar"
-									src='<c:url value="/img/avatars/profile-pic.jpg"></c:url>' />
+									src='<c:url value="${target_user_info.img_url}"></c:url>' />
 								</span>
 
 								<div class="space-4"></div>
@@ -71,7 +71,7 @@
 									<div class="inline position-relative">
 										<div class="user-title-label">
 											<i class="icon-circle light-green middle"></i> &nbsp; <span
-												class="white">${user_info.name}</span>
+												class="white">${target_user_info.name}</span>
 										</div>
 									</div>
 								</div>
@@ -92,7 +92,7 @@
 							<h4 class="blue">
 								<span class="label label-purple arrowed-in-right"> <i
 									class="icon-circle smaller-80 align-middle"></i> 用户名
-								</span> <span class="middle">${user_name}</span>
+								</span> <span class="middle">${target_user_name}</span>
 							</h4>
 
 							<div class="profile-user-info">
@@ -101,7 +101,7 @@
 
 									<div class="profile-info-value">
 										<i class="icon-info-sign light-blue bigger-110"></i> <span
-											id="user_id" name="user_id">${user_info.user_id}</span>
+											id="user_id" name="user_id">${target_user_info.user_id}</span>
 									</div>
 								</div>
 
@@ -118,7 +118,7 @@
 									<div class="profile-info-name">性别</div>
 									<div class="profile-info-value">
 										<i class="icon-male light-blue"></i>
-										<span class="editable editable-click" name="sex" id="sex">${user_info.sex}</span>
+										<span class="editable editable-click" name="sex" id="sex">${target_user_info.sex}</span>
 									</div>
 								</div>
 
@@ -126,7 +126,7 @@
 									<div class="profile-info-name">联系电话</div>
 									<div class="profile-info-value">
 										<i class="icon-phone"></i> 
-										<span class="editable editable-click" name="phone_num" id="phone_num">${user_info.phone_num}</span>
+										<span class="editable editable-click" name="phone_num" id="phone_num">${target_user_info.phone_num}</span>
 									</div>
 								</div>
 
@@ -134,7 +134,7 @@
 									<div class="profile-info-name">邮箱</div>
 									<div class="profile-info-value">
 										<i class="icon-envelope" style="color: darkcyan;"></i> <span
-											class="editable editable-click" name="email" id="email">${user_info.email}</span>
+											class="editable editable-click" name="email" id="email">${target_user_info.email}</span>
 									</div>
 								</div>
 
@@ -311,8 +311,18 @@
 													thumb = $('#avatar')
 															.next().find('img')
 															.data('thumb');
-													if (thumb)
+
+													$.ajax({
+														url:"/ClassManagement/img/decode",
+														data : {imgBase64Str : thumb},
+														type:'post',
+														success : function(r){
+															$('#header_img').attr('src', '<c:url value="'+r+'"></c:url>');
+														}
+													});
+													if (thumb){
 														 $('#avatar').get(0).src = thumb;
+													}
 													
 												}
 
@@ -353,8 +363,9 @@
 		});
 		
 		// 开启聊天窗口
+		var receiver_id = ${target_user_info.user_id};
 		$('#show_chatting_room_btn').on('click', function(){
-			window.open('/ClassManagement/user/chatting', 'newwindow', 
+			window.open('/ClassManagement/user/chatting?receiver_id='+receiver_id, 'newwindow', 
 					'height=420px, width=600px, top=200px, left=400px, toolbar=no, menubar=no, scrollbars=no, resizable=true, location=no, status=no');
 		});
 		

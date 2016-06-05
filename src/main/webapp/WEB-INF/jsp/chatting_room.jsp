@@ -24,14 +24,21 @@
 						<div class="slimScrollDiv"
 							style="position: relative; overflow: hidden; width: auto; height: 300px;">
 							<div class="dialogs" id="dialogs" style="overflow: hidden; width: auto; height: 300px; overflow: scroll;">
-
+								
 								<c:forEach items="${allMessages}" var="message">
 									<div class="itemdiv dialogdiv">
 										<div class="user">
-											<img alt="John's Avatar" src='<c:url value="/img/avatars/avatar.jpg"></c:url>'>
+											<c:choose>
+												<c:when test="${message.sender_id==user.user_id}">
+													<img alt="John's Avatar" src='<c:url value="${sender_info.img_url}"></c:url>'>
+												</c:when>
+												<c:otherwise>
+													<img alt="John's Avatar" src='<c:url value="${receiver_info.img_url}"></c:url>'>
+												</c:otherwise>
+											</c:choose>
 										</div>
 
-										<div class="body">
+										<div class="body" <c:if test="${message.sender_id==user.user_id}">style="background-color:#D1F9D1;"</c:if>>
 											<div class="time">
 												<i class="icon-time"></i> <span class="blue">${message.send_time}</span>
 											</div>
@@ -55,7 +62,7 @@
 										</div>
 									</div>
 								</c:forEach>
-								
+								<div style="text-align:center;color:gray;padding-bottom:10px;">无更多历史消息</div>
 							</div>
 							<div class="slimScrollBar ui-draggable"
 								style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 252.809px; background: rgb(0, 0, 0);"></div>
@@ -108,7 +115,7 @@
 			var item = 
 				'<div class="itemdiv dialogdiv">'+
 					'<div class="user">' +
-						'<img alt="John\'s Avatar" src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\'>'+
+						'<img alt="John\'s Avatar" src=\'<c:url value="'+'${receiver_info.img_url}'+'"></c:url>\'>'+
 					'</div>'+
 
 					'<div class="body">'+
@@ -171,7 +178,8 @@
 		}
 		
 		// 利用ajax去获取服务端的session值
-		var sender_id = null;
+		var message_sender_id = null;
+		var message_receiver_id = null;
 		var username = null;
 		$.ajax({
 			url: "/ClassManagement/user/getCurrentUserFromSession",
@@ -181,9 +189,24 @@
 			async: false,
 			success : function(r){
 				if(r.user_id){
-					sender_id = r.user_id;
+					message_sender_id = r.user_id;
 					username = r.username;
 				}
+			}
+		});
+		
+		/** 打开聊天窗口之后，将所有聊天记录设成已读 */
+		var receiver_id = ${user.user_id};
+		var requestParams = getUrlParameters();
+		var sender_id = requestParams["receiver_id"];
+		
+		$.ajax({
+			url: "/ClassManagement/message/updateUnreadStatus",
+			data : {sender_id : sender_id, receiver_id : receiver_id},
+			type:"post",
+			
+			success : function(){
+				
 			}
 		});
 		
@@ -197,7 +220,7 @@
 			if(window.opener.ws != null){
 				var requestParams = getUrlParameters();
 				
-				message["sender_id"] = sender_id;
+				message["sender_id"] = message_sender_id;
 				message["sender_username"] = username;
 				message["receiver_id"] = requestParams["receiver_id"];
 				message["send_time"] = getTime();
@@ -208,10 +231,10 @@
 				var item = 
 					'<div class="itemdiv dialogdiv">'+
 						'<div class="user">' +
-							'<img alt="John\'s Avatar" src=\'<c:url value="/img/avatars/avatar.jpg"></c:url>\'>'+
+							'<img alt="John\'s Avatar" src=\'<c:url value="/'+'${sender_info.img_url}'+'"></c:url>\'>'+
 						'</div>'+
 
-						'<div class="body">'+
+						'<div class="body" style="background-color:#D1F9D1;">'+
 							'<div class="time">'+
 								'<i class="icon-time"></i> <span class="blue">'+ message["send_time"] +'</span>'+
 							'</div>'+

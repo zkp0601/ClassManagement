@@ -14,8 +14,12 @@
 	</select>
 	
 	<insert id="insertCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="course_id">
-		INSERT INTO course( course_name, teacher_name, position, start_time, end_time, signInIP ) 
-			VALUES(#{course_name}, #{teacher_name}, #{position}, #{start_time}, #{end_time}, #{signInIP})
+		INSERT INTO course( course_name, teacher_name, position, start_time, end_time, signInIP, week_time ) 
+			VALUES(#{course_name}, #{teacher_name}, #{position}, #{start_time}, #{end_time}, #{signInIP}, #{week_time})
 	</insert>
+	
+	<select id="selectUnaddedCourses" resultType="Course">
+		SELECT * FROM course WHERE course_id NOT IN ( <foreach collection="array" index="index" item="id" separator=",">#{id}</foreach> )
+	</select>
 
 </mapper>

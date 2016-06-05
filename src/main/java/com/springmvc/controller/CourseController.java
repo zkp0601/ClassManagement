@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -11,12 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springmvc.model.Course;
+import com.springmvc.model.Notice;
 import com.springmvc.model.SignRecord;
 import com.springmvc.model.User;
 import com.springmvc.model.User_infos;
 import com.springmvc.service.ICourseService;
+import com.springmvc.service.INoticeService;
 import com.springmvc.service.ISignRecordService;
 import com.springmvc.service.IUser_infosService;
 
@@ -56,10 +60,16 @@ public class CourseController extends BaseController{
 			}
 		}catch(Exception e){ }
 		
+		/** 获取课程公告 */
+		INoticeService noticeService = (INoticeService) this.context.getBean("noticeServiceImpl");
+		List<Notice> notices = noticeService.getNoticeByCourse_id(course_id);
+		model.addAttribute("notices", notices);
 		return "myCourse";
 	}
 	
+	/** 教师新增课程接口 */
 	@RequestMapping(value={"/insert"}, method=RequestMethod.POST)
+	@ResponseBody
 	public void insert(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		ICourseService courseService = (ICourseService) this.context.getBean("courseServiceImpl");
 		String course_name = request.getParameter("course_name").toString();
@@ -81,7 +91,58 @@ public class CourseController extends BaseController{
 		String courseList = currentUser_infos.getCourseList()+ course_id + "|" ;
 		currentUser_infos.setCourseList(courseList);
 		user_infosService.updateUser_infosByID(currentUser_infos);
+		request.getSession().setAttribute("currentUser_info", currentUser_infos);
 		response.sendRedirect("/ClassManagement/course/index?course_id="+course_id);
 	}
 	
+	/**
+	 * Method remove_course_from_courseList
+	 * -------------------------------------
+	 * 《从courseList课程列表中删除指定课程》
+	 * @throws IOException 
+	 */
+	@RequestMapping(value={"/removeCourse"}, method=RequestMethod.POST)
+	@ResponseBody
+	public void remove_course_from_courseList(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		User user = (User) request.getSession().getAttribute("currentUser");
+		if(user == null){
+			response.sendRedirect("/ClassManagement/index");
+			return;
+		}
+		int user_id = user.getUser_id();
+		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+		User_infos user_info = user_infosService.selectUser_infosByID(user_id);
+		String courseList = user_info.getCourseList();
+		
+		String course_id = request.getParameter("course_id").toString();
+		if(courseList.contains("|"+course_id+"|")){
+			courseList = courseList.replace("|"+course_id+"|", "|");
+			user_info.setCourseList(courseList);
+			user_infosService.updateUser_infosByID(user_info);
+			request.getSession().setAttribute("currentUser_info", user_info);
+		}
+	}
+	
+	/**
+	 * Method add_course
+	 * ------------------
+	 * 《新增课程至courseList中》
+	 * @throws IOException 
+	 */
+	@RequestMapping(value={"/addCourse"}, method=RequestMethod.POST)
+	public void add_course(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		User user = (User) request.getSession().getAttribute("currentUser");
+		if(user == null){
+			response.sendRedirect("/ClassManagement/index");
+			return;
+		}
+		int user_id = user.getUser_id();
+		IUser_infosService user_infosService = (IUser_infosService) this.context.getBean("user_infosServiceImpl");
+		String appendList = request.getParameter("appendList").toString();
+		User_infos user_info = user_infosService.selectUser_infosByID(user_id);
+		String newCourseList = user_info.getCourseList() + appendList;
+		user_info.setCourseList(newCourseList);
+		user_infosService.updateUser_infosByID(user_info);
+		request.getSession().setAttribute("currentUser_info", user_info);
+	}
 }

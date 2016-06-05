@@ -33,4 +33,8 @@ public class CourseServiceImpl implements ICourseService{
 	public List<Course> selectCourseByIDs(int course_ids[]){
 		return courseDAO.selectCourseByIDs(course_ids);
 	}
+	
+	public List<Course> selectUnaddedCourses(String[] addedCourses){
+		return courseDAO.selectUnaddedCourses(addedCourses);
+	}
 }

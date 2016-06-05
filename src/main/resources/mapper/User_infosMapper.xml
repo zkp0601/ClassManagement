@@ -24,7 +24,7 @@
 	</select>
 	
 	<update id="updateUser_infosByID" parameterType="User_infos" keyProperty="user_id">
-		UPDATE user_infos SET name=#{name}, personal_num=#{personal_num}, courseList=#{courseList}, sex=#{sex}, phone_num=#{phone_num}, email=#{email} 
+		UPDATE user_infos SET name=#{name}, personal_num=#{personal_num}, courseList=#{courseList}, sex=#{sex}, phone_num=#{phone_num}, email=#{email}, img_url=#{img_url} 
 			WHERE user_id=#{user_id}
 	</update>
 	

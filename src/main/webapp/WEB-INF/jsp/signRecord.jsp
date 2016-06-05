@@ -15,7 +15,7 @@
 			<li><i class="icon-home"></i> <a href="/ClassManagement/index/">首页</a></li>
 			<li><a style="color: #DA5430; weight: bold;"
 				href="/ClassManagement/course/index?course_id=${current_course.course_id}">${current_course.course_name}</a></li>
-			<li class="active">查看详情</li>
+			<li class="active">出勤详情</li>
 		</ul>
 		<!-- .breadcrumb -->
 
@@ -41,7 +41,8 @@
 								Sign Record Detail
 						</h5>
 
-						<div class="widget-toolbar widget-toolbar-light no-border">
+						<br><span style="font-weight:bold;"> (总课程数:${current_course.week_time}次)</span>
+						<div class="widget-toolbar widget-toolbar-light no-border" data-toggle="tooltip" title="更换颜色">
 							<select id="simple-colorpicker" class="hide" style="display: none;">
 								<option selected="" data-class="dark" value="#404040">#404040</option>
 								<option data-class="blue2" value="#5090C1">#5090C1</option>
@@ -92,6 +93,9 @@
 												<td><span class="label label-danger">${record.value.earlyLeave_times}次</span></td>
 											</tr>
 										</c:forEach>
+										<c:if test="${records_size==0}">
+											<tr><td colspan="4" style="text-align:center;"><span class="label label-info">暂无数据</span></td></tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
@@ -126,6 +130,10 @@
 												</td>
 											</tr>
 										</c:forEach>
+										
+										<c:if test="${records_size==0}">
+											<tr><td colspan="4" style="text-align:center;"><span class="label label-info">暂无数据</span></td></tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>

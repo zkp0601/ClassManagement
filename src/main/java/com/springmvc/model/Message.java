@@ -1,6 +1,12 @@
 package com.springmvc.model;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6600223508707483168L;
 	private int message_id = 0;
 	private String content;
 	private String send_time;

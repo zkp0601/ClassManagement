@@ -1,5 +1,6 @@
 package com.springmvc.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.springmvc.model.User;
@@ -23,4 +24,6 @@ public interface IUserDAO {
 	
 	/** 根据id更新用户 */
 	public void updateUserById(int id);
+	
+	public List<User> selectUser_namesByIds(int[] user_ids);
 }

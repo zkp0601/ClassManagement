@@ -65,12 +65,14 @@
 								</a>
 							</c:forEach>
 						</h4>
-						<button class="btn btn-app btn-success" id="publish_new_course" style="font-size: 15px; margin-top: 10px;">
-							<c:choose>
-								<c:when test="${is_teacher==true}">点此发布</c:when>
-								<c:otherwise>点此添加</c:otherwise>
-							</c:choose>
-						</button>
+						<c:choose>
+							<c:when test="${is_teacher==true}">
+								<button class="btn btn-app btn-success" id="publish_new_course" style="font-size: 15px; margin-top: 10px;">点此发布</button>
+							</c:when>
+							<c:otherwise>
+								<button class="btn btn-app btn-success" id="add_new_course" style="font-size: 15px; margin-top: 10px;">点此添加</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 
@@ -88,9 +90,18 @@
 							<c:when test="${anyCourses!=false}">
 								<div class="widget-header widget-header-flat widget-header-small">
 									<i class="icon-star orange"></i>
-									所有课程
+									<span id="draw_chart_title">当前所有课程男女比例</span>
 									<div class="widget-toolbar no-border">
-										<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">当前</button>
+										<c:if test="${anyCourses}">
+											<select style="border:solid orange 1px;" class="course_select" onchange="getSignRecordData();">
+												<option value="0">所有课程</option>
+												<c:forEach items="${course_infos}" var="course_info">
+													<option value="${course_info.course_id}">
+														${course_info.course_name}
+													</option>
+												</c:forEach>
+											</select>
+										</c:if>
 									</div>
 								</div>
 								<div class="widget-body" style="background-color:ghostwhite">
@@ -190,7 +201,6 @@
 			})
 		}
 		drawPieChart(student_ratio, data);
-
 		/**
 		we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
 		so that's not needed actually.
@@ -226,26 +236,27 @@
 			'width' : '70%',
 			'min-height' : '150px'
 		});
+		/**
 		data = [ {
-			label : "正常",
-			data : 85,
+			label : "已出勤",
+			data : 5,
 			color : "#68BC31"
 		}, {
-			label : "缺勤",
-			data : 4,
-			color : "#4F4E96"
+			label : "待完成",
+			data : 14,
+			color : "#B4B5AB"
 		}, {
 			label : "迟到",
-			data : 9,
-			color : "#DA5430"
-		}, {
-			label : "早退",
 			data : 2,
 			color : "#FEE074"
+		}, {
+			label : "早退",
+			data : 0,
+			color : "#DA5430"
 		} ]
 		drawPieChart(attendance_ratio, data);
 		attendance_ratio.data('chart', data);
-		attendance_ratio.data('draw', drawPieChart);
+		attendance_ratio.data('draw', drawPieChart);*/
 		attendance_ratio.on('plothover', function(event, pos, item) {
 			if (item) {
 				if (previousPoint != item.seriesIndex) {
@@ -264,9 +275,72 @@
 			}
 
 		});
+		
+		function getSignRecordData(){
+			var course_id = $('.course_select option:selected').val();
+			
+			$.ajax({
+				url : '/ClassManagement/sign/getSignRecordData',
+				data: {course_id : course_id},
+				type: 'post',
+				dataType: 'json',
+				async:false,
+				
+				success: function(r){
+					if(r.male_num)
+						male_ratio = r.male_num;
+					if(r.female_ratio)
+						female_ratio = r.female_num;
+					/** 重新绘制出勤情况 */
+					if(course_id != 0){
+						data = [{
+							label : "已出勤",
+							data : r.allSignRecords.length,
+							color : "#68BC31"
+						}, {
+							label : "待出勤",
+							data : r.total_class_num - r.allSignRecords.length,
+							color : "#B4B5AB"
+						}, {
+							label : "迟到",
+							data : r.lateSignRecords.length,
+							color : "#FEE074"
+						}, {
+							label : "早退",
+							data : r.earlyLeaveSignRecords.length,
+							color : "#DA5430"
+						}];
+						drawPieChart(attendance_ratio, data);
+						document.getElementById("draw_chart_title").innerHTML = "当前课程男女比例 & 出勤情况"
+					} else{
+						document.getElementById('attendance-ratio').innerHTML = "";
+						document.getElementById("draw_chart_title").innerHTML = "当前所有课程男女比例"
+					}
+					
+					/** 重新绘制男女比例 */
+					var data = [ {
+							label : "男",
+							data : male_ratio,
+							color : "#4F4E96"
+						}, {
+							label : "女",
+							data : female_ratio,
+							color : "#DA5430"
+						} ]
+					drawPieChart(student_ratio, data);
+				}
+			})	
+		}
+		/** 函数写在jquery中时，若需要被外部onclick或者onchange等调用，需要加上下面的语句 */
+		window.getSignRecordData = getSignRecordData;
+	})
+
+	$('#publish_new_course').click(function(){
+		window.location.href = "/ClassManagement/index/publish";
 	})
 	
-	$('#publish_new_course').click(function(){
+	$('#add_new_course').click(function(){
 		window.location.href = "/ClassManagement/index/add";
 	})
+	
 </script>

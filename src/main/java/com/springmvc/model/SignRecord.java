@@ -1,6 +1,12 @@
 package com.springmvc.model;
 
-public class SignRecord {
+import java.io.Serializable;
+
+public class SignRecord implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2881428157710868313L;
 	private int user_id;
 	private int course_id;
 	private String sign_date;

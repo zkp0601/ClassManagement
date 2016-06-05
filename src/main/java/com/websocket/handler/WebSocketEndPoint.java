@@ -26,6 +26,10 @@ import net.sf.json.JSONObject;
 public class WebSocketEndPoint extends TextWebSocketHandler{
 	
 	private static Map<String, WebSocketSession> sessionList = new HashMap<String, WebSocketSession>();
+	@SuppressWarnings("resource")
+	private ApplicationContext context = new ClassPathXmlApplicationContext( 
+			new String[]{"classpath:conf/spring.xml", "classpath:conf/spring-mybatis.xml"});
+	private IMessageService messageService = (IMessageService) context.getBean("messageServiceImpl");
 	
 	/** 建立后将当前的websocket连接加入sessionList */
 	@Override
@@ -52,11 +56,7 @@ public class WebSocketEndPoint extends TextWebSocketHandler{
 		String send_time = jsonObject.getString("send_time");
 		
 		Message save_message = new Message(content, send_time, sender_id, receiver_id);
-		
-		@SuppressWarnings("resource")
-		ApplicationContext context = new ClassPathXmlApplicationContext( 
-				new String[]{"classpath:conf/spring.xml", "classpath:conf/spring-mybatis.xml"});
-		IMessageService messageService = (IMessageService) context.getBean("messageServiceImpl");
+	
 		messageService.insertMessage(save_message);
 		
         /** 服务器转发 message 至对应的 session 中 */
