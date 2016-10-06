@@ -5,17 +5,15 @@ import java.util.HashMap;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.alibaba.fastjson.JSON;
 import com.springmvc.common.SpringTestCase;
+import com.springmvc.redis.service.RedisCache;
 import com.springmvc.service.IUser_infosService;
-import com.sun.org.apache.xml.internal.serialize.Serializer;
 
 public class RedisTest extends SpringTestCase{
 	
@@ -27,6 +25,9 @@ public class RedisTest extends SpringTestCase{
 	@Resource
 	private IUser_infosService user_infosService;
 	
+	@Resource
+	private RedisCache redisCache;
+	
 	@Test
 	public void redisTest(){
 		logger.info("开始设置name属性redis值");
@@ -37,7 +38,7 @@ public class RedisTest extends SpringTestCase{
 		
 		Object obj = redisTemplate.opsForValue().get(key);
 		logger.debug(obj.toString());
-		System.out.println( obj.toString() );
+		System.out.println( JSON.toJSON(obj) );
 	}
 	
 	@Test
@@ -50,7 +51,8 @@ public class RedisTest extends SpringTestCase{
 	
 	@Test
 	public void test(){
-		int user_id = 1;
-		System.out.println(user_infosService.selectUser_infosByID(user_id));
+//		int user_id = 1;
+//		System.out.println(JSON.toJSON(user_infosService.selectUser_infosByID(user_id)));
+		redisCache.put("testKey", new Object());
 	}
 }

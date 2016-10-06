@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/addCourse.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/chatting_room.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/footer.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/header.jsp=UTF-8

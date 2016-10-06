@@ -9,9 +9,12 @@
       http://www.springframework.org/schema/context/spring-context.xsd">
     
     <!-- 引入jdbc配置文件 -->
-    <context:property-placeholder location="classpath:conf/jdbc.properties"/>
+    <context:property-placeholder location="classpath:properties/jdbc.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:properties/log4j.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:properties/redis.properties" ignore-unresolvable="true"/>
      
     <!-- 扫描文件（自动将services层注入） -->
     <context:component-scan base-package="com.springmvc.service"/>
+    <context:component-scan base-package="com.springmvc.redis.service"/>
     
 </beans>

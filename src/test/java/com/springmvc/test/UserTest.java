@@ -33,7 +33,7 @@ public class UserTest extends SpringTestCase{
 	@Test
 	public void addUser(){
 		User user = new User();
-		user.setUsername("kalper");
+		user.setUsername("kalperaa");
 		user.setPassword("kalper");
 		userService.insertUser(user);
 	}
