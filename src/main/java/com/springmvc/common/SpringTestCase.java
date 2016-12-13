@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @since 2016年06月06日
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( locations = {"classpath:conf/spring.xml", "classpath:conf/spring-redis.xml", 
-		"classpath:conf/spring-mybatis.xml", "classpath:conf/spring-activemq.xml"})
+@ContextConfiguration( locations = {"classpath:conf/spring.xml", "classpath:conf/spring-mybatis.xml"})
 public class SpringTestCase {
 	
 	

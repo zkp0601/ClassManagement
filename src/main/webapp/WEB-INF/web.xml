@@ -105,10 +105,10 @@
     	<servlet-name>default</servlet-name>
     	<url-pattern>*.1</url-pattern>
     </servlet-mapping>
-    <servlet>
+    <servlet-mapping>
     	<servlet-name>default</servlet-name>
     	<url-pattern>*.gif</url-pattern>
-    </servlet>
+    </servlet-mapping>
     
     <servlet>
         <servlet-name>spring</servlet-name>

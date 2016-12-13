@@ -27,8 +27,8 @@ public class UserTest extends SpringTestCase{
 	@Resource
 	private IUser_infosService user_infosService;
 	
-	@Autowired
-	private RedisTemplate<Serializable, Serializable> redisTemplate;
+//	@Autowired
+//	private RedisTemplate<Serializable, Serializable> redisTemplate;
 	
 	@Test
 	public void addUser(){
@@ -44,7 +44,7 @@ public class UserTest extends SpringTestCase{
 		
 		System.out.println( user_infosService.insertUser_infos(info) );
 	}
-	
+	/*
 	@Test 
 	public void getUserInfoFromRedisTest(){
 		
@@ -84,7 +84,11 @@ public class UserTest extends SpringTestCase{
 				}
 			}
 		});
-		
-		
+	}
+	*/
+	
+	@Test
+	public void testRun(){
+		System.out.println("===>ok");
 	}
 }
